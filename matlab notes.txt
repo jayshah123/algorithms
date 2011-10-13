@@ -1,0 +1,43 @@
+imresize fn (reduces each by dimension by the factor provided)
+
+use : imresize(mat,factor)
+
+e.g imresize(mat,1/2)
+on a 128 x 128 will result in 
+	64 x 64 image interpolated.
+
+
+th=imadjust(mat,[],[],gammaval)
+for gamma adjustment
+
+
+a=input('prompting text');
+to get a value
+
+disp('str' val);
+to display values
+
+find(condition)
+returns a vector of positions in X that satisfiy condition.
+
+
+imshow(mat2gray(log(1+abs(fftshift(fft2(a))))));
+to view fft of an image matrix a
+
+w_sp=imnoise(w,'salt & pepper');
+returns an image with spreading salt & pep noise on w.
+
+t_sp_m3=medfilt2(t_sp);
+median filter applied on t_sp
+
+fil=fspecial('average',[n n]);
+returns a filter box that can b applied to an image.
+
+im=filter2(fil,image);
+returns an image after applying filter(fil) on image.
+
+ordfilt2(w,pos in sorted values,maskmatrix)
+oredered filter returns resultant image.
+
+edge(w,method)
+returns an b/w image containing only edges found using method method.

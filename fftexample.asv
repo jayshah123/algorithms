@@ -1,0 +1,22 @@
+N=input('enter no. of samples');
+x = zeros(1,N);
+for i = 1:N
+    x(i) = input('value no ');
+end
+x
+
+wn=e^-2*pi*j/N;
+
+w = zeros(n);
+
+for i = 1:N
+    for j = 1:N
+        if i==1 || j==1
+            w(i,j)=1;
+        else
+            w(i,j)=wn^(i+1)
+        end
+    end
+end
+
+            
