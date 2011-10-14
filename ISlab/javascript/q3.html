@@ -1,0 +1,21 @@
+<html>
+<body>
+UserName&nbsp &nbsp<input type="text" id="username">
+<br>
+<br>
+<button name="welcome" onclick="welcome();" >Submit</button>
+<br>
+<br>
+<script type="text/javascript">
+   function welcome()
+   {
+     string=document.getElementById("username");
+     if(string.value == "")
+       alert("Please enter a username");
+     else
+       document.getElementById("x").innerHTML='Welcome to My site '+string.value+' !';
+   }
+</script>
+<div id="x"></div>
+ </body>
+</html>

@@ -1,0 +1,40 @@
+<html>
+<script type="text/javascript">
+   var x=screen.width;
+   var y=screen.height;
+   var randomx=Math.floor(Math.random()*x);
+   var randomy=Math.floor(Math.random()*y);
+   var windows = [];
+   function popup1()
+   {
+     windows[0]=window.open("","topleft","height=200,width=200");
+     windows[1]=window.open("","topright","height=200,width=200");
+     windows[2]=window.open("","bottomleft","height=200,width=200");
+     windows[3]=window.open("","bottomright","height=200,width=200");
+     windows[4]=window.open("","center","height=200,width=200");
+     windows[5]=window.open("","random","height=200,width=200");
+     windows[1].moveTo(0,(y-200));
+     windows[2].moveTo(x,0);
+     windows[3].moveTo(x,(y-200));
+     windows[4].moveTo(x/2,y/2);
+     windows[5].moveTo(randomx,randomy);
+     //alert(x+"  "+y);
+   }
+   function closeall()
+   {
+      var i;
+      for(i=1;i<=6;i++)
+      {
+        if(windows[i])
+        {
+          windows[i].close();
+        }
+     }
+   }
+   window.onunload = closeall();
+ </script>
+ 
+ <body  >
+ <a href="" onclick="popup1();"><img src="../../images/owl.png" width="300" height="300" border="0" alt=""></a>
+ </body>
+</html>

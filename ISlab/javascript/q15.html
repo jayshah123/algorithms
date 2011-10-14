@@ -1,0 +1,21 @@
+<html>
+<head>
+<script type="text/javascript">
+   function replace()
+   {
+	var string=document.getElementById("string").value;
+	var repchar=document.getElementById("repchar").value;
+	var newchar=document.getElementById("newchar").value;		
+	document.getElementById("paste").innerHTML=string.replace(new RegExp( repchar, "gi" ),newchar);
+   }
+</script>
+</head>
+
+<body>
+  Enter the String :- <input type="text" id="string"></br>
+  Enter the character to be replaced :- <input type="text" id="repchar"></br>
+  Enter the New character :- <input type="text" id="newchar"></br></br>
+  <button onclick="replace()" id="replacebutton">Replace</button>
+  </br><div id="paste"></div>
+</body>
+</html>

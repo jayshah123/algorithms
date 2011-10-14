@@ -1,0 +1,21 @@
+<html>
+<script type="text/javascript">
+function starttest()
+{
+  var a=Math.floor(Math.random()*21)
+  var b=Math.floor(Math.random()*21)
+  var c="Enter the value of "+a+"+"+b
+  var ret=prompt(c);
+  var d=a+b
+  if(ret == d)
+    document.getElementById("paste").innerHTML="Correct Answer"
+  else
+    document.getElementById("paste").innerHTML="Wrong Answer"
+}
+</script>
+<body>
+<h1><u>QUIZ</u></h1>
+		Press the button to start the QUIZ :- &nbsp&nbsp<button id="start" onclick="starttest();"> START </button><br/>
+		<div id="paste"></div>
+	</body>
+</html>

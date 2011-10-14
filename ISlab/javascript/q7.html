@@ -1,0 +1,23 @@
+<html>
+<script type="text/javascript">
+   var string;
+   function eval1()
+   {
+      string=document.getElementById("expr").value;
+      if(string == "")
+      {
+        alert("please enter the expression");
+      }
+      else
+      {
+        document.getElementById("paste").innerHTML="The result is : " + eval(string);
+     }
+   }
+</script>
+ <body>
+	Expression<input type="text" id="expr"/><br/>
+	<button id="sub" onclick="eval1();">Submit</button><br/>
+	<br/><br/><br/>
+	<div id="paste"></div>
+ </body>
+</html>

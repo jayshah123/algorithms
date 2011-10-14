@@ -1,0 +1,18 @@
+<html>
+<body>
+String 1&nbsp &nbsp<input type="text" id="t1">
+<br>
+String 2&nbsp &nbsp<input type="text" id="t2">
+<br>
+<button name="concat" onclick="concatenate();" >Concatenate</button>
+<br>
+<br>
+<script type="text/javascript">
+   function concatenate()
+   {
+      document.getElementById("x").innerHTML='Concatenated String is:-    '+document.getElementById("t1").value+document.getElementById("t2").value;
+   }
+</script>
+<div id="x"></div>
+</body>
+</html>

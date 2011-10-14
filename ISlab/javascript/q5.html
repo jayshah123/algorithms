@@ -1,0 +1,22 @@
+<html>
+<body>
+Height:- &nbsp<input type="text" id="height"/>
+<br>
+Width:- &nbsp<input type="text" id="width"/>
+<br>
+<button id="popup" onclick="popup();">Pop-UP</button>
+</body>
+
+<script type="text/javascript">
+   var box;
+   
+   function popup()
+   {
+     box="height="+document.getElementById('height').value+",width="+document.getElementById('width').value;
+     window.open('','mywindow',box);
+   }
+</script>	
+
+
+ </html>
+
