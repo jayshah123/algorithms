@@ -41,3 +41,35 @@ oredered filter returns resultant image.
 
 edge(w,method)
 returns an b/w image containing only edges found using method method.
+
+a = [zeros(8,4) ones(8,4)]
+a =
+0 0 0 0 1 1 1 1
+0 0 0 0 1 1 1 1
+0 0 0 0 1 1 1 1
+0 0 0 0 1 1 1 1
+0 0 0 0 1 1 1 1
+0 0 0 0 1 1 1 1
+0 0 0 0 1 1 1 1
+0 0 0 0 1 1 1 1
+
+>> [u,v] = meshgrid(1:5,1:5);
+>> u
+
+u =
+
+     1     2     3     4     5
+     1     2     3     4     5
+     1     2     3     4     5
+     1     2     3     4     5
+     1     2     3     4     5
+
+>> v
+
+v =
+
+     1     1     1     1     1
+     2     2     2     2     2
+     3     3     3     3     3
+     4     4     4     4     4
+     5     5     5     5     5

@@ -1,0 +1,10 @@
+int k=systemcall();
+
+if system call is unsuccessfull (k!=0)
+save errno because it is clobbered by next system call
+int error_code=errno;
+switch(error_code){
+print the error
+fprintf(stderr,"%s\n",strerror(error_code));
+}
+

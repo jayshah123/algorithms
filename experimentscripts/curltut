@@ -1,0 +1,10 @@
+To post data to a website example
+        curl --data "birthyear=1905&press=%20OK%20"         http://www.example.com/when.cgi
+To Get data to a website example
+ curl "http://www.hotmail.com/when/junk.cgi?birthyear=1905&press=OK"
+To get a webpage
+	curl http://curl.haxx.se
+To trace headers andother stuff
+	curl --trace-ascii debugdump.txt http://www.example.com
+If a web page says it has moved, use
+	curl --location URL

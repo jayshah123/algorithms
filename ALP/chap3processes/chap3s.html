@@ -1,0 +1,367 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><HTML>
+<HEAD>
+<TITLE></TITLE>
+</HEAD>
+<BODY>
+<A name=1></a><IMG src="chap3-1_1.jpg"><br>
+04 0430 CH03 &nbsp;5/22/01 &nbsp;10:13 AM &nbsp;Page 45<br>
+<b>3</b><br>
+<b>Processes</b><br>
+<b>A</b>RUNNINGINSTANCEOFAPROGRAMISCALLEDA<i>PROCESS</i>.If you have&nbsp;two&nbsp;<br>
+terminal windows showing on your screen,&nbsp;then you are probably running the&nbsp;<br>same terminal program twice—you have&nbsp;two terminal processes.&nbsp;Each terminal&nbsp;<br>window is probably running a shell;&nbsp;each running shell is another process.When you<br>invoke&nbsp;a command from a shell,&nbsp;the corresponding program is executed in a new<br>process;&nbsp;the shell process resumes when that process completes.<br>
+Advanced programmers often use multiple cooperating processes in a single appli-<br>
+cation to enable the application to do more than one thing at once,&nbsp;to increase&nbsp;<br>application robustness,&nbsp;and to make use of already-existing programs.<br>
+Most of the process manipulation functions described in this chapter are similar to<br>
+those on other UNIX systems.&nbsp;Most are declared in the header file&nbsp;&lt;unistd.h&gt;;&nbsp;check<br>the man page for each function to be sure.<br>
+<b>3.1</b><br>
+<b>Looking at Processes</b><br>
+Even as you sit down at your computer,&nbsp;there are processes running.&nbsp;Every executing<br>program uses one or more processes.&nbsp;Let’s start by&nbsp;taking a look at the processes<br>already on your computer.<br>
+<hr>
+<A name=2></a>04 0430 CH03 &nbsp;5/22/01 &nbsp;10:13 AM &nbsp;Page 46<br>
+<b>46</b><br>
+<b>Chapter 3</b><br>
+<b>Processes</b><br>
+<b>3.1.1</b><br>
+<b>Process IDs</b><br>
+Each process in a Linux system is identified by&nbsp;its unique&nbsp;<i>process ID</i>,&nbsp;sometimes<br>referred to as&nbsp;<i>pid</i>.&nbsp;Process IDs are 16-bit numbers that are assigned sequentially by<br>Linux as new processes are created.<br>
+Every process also has a parent process (except the special&nbsp;init&nbsp;process,&nbsp;described in<br>
+Section 3.4.3,&nbsp;“Zombie Processes”).Thus,&nbsp;you can think of the processes on a Linux<br>system as arranged in a tree,&nbsp;with the&nbsp;init&nbsp;process at its root.The&nbsp;<i>parent process ID</i>,&nbsp;or<br><i>ppid</i>,&nbsp;is&nbsp;simply the process ID of the process’s parent.<br>
+When referring to process IDs in a C or C++ program,&nbsp;always use the&nbsp;pid_t<br>
+typedef,&nbsp;which is defined in&nbsp;&lt;sys/types.h&gt;.&nbsp;A&nbsp;program can obtain the process ID of<br>the process it’s running in with the&nbsp;getpid()&nbsp;system call,&nbsp;and it can obtain the process<br>ID of its parent process with the&nbsp;getppid()&nbsp;system call.&nbsp;For instance,&nbsp;the program in<br>Listing 3.1 prints its process ID and its parent’s process ID.<br>
+Listing 3.1<br>
+<b>(&nbsp;<i>print-pid.c</i></b><b>) Printing the Process ID</b><br>
+#include &lt;stdio.h&gt;<br>#include &lt;unistd.h&gt;<br>
+int main ()<br>{<br>
+printf (“The process ID is %d\n”, (int) getpid ());<br>printf (“The parent process ID is %d\n”, (int) getppid ());<br>return 0;<br>
+}<br>
+Observe&nbsp;that if you invoke&nbsp;this program several times,&nbsp;a different process ID is<br>reported because each invocation is in a new process.&nbsp;However,&nbsp;if you invoke&nbsp;it every<br>time from the same shell,&nbsp;the parent process ID (that is,&nbsp;the process ID of the shell<br>process) is the same.<br>
+<b>3.1.2</b><br>
+<b>Viewing Active&nbsp;Processes</b><br>
+The&nbsp;ps&nbsp;command displays the processes that are running on your system.The<br>GNU/Linux version of&nbsp;ps&nbsp;has lots of options because it tries to be compatible with<br>versions of&nbsp;ps&nbsp;on several other UNIX variants.These options control which processes<br>are listed and what information about each is shown.<br>
+By default,&nbsp;invoking&nbsp;ps&nbsp;displays the processes controlled by&nbsp;the terminal or terminal<br>
+window in which&nbsp;ps&nbsp;is invoked.&nbsp;For example:<br>
+% ps<br>
+PID TTY &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;TIME CMD<br>
+21693 pts/8 &nbsp; &nbsp;00:00:00 bash<br>21694 pts/8 &nbsp; &nbsp;00:00:00 ps<br>
+<hr>
+<A name=3></a>04 0430 CH03 &nbsp;5/22/01 &nbsp;10:13 AM &nbsp;Page 47<br>
+<b>3.1</b><br>
+<b>Looking at Processes</b><br>
+<b>47</b><br>
+This invocation of&nbsp;ps&nbsp;shows two processes.The first,&nbsp;bash,&nbsp;is the shell running on this<br>terminal.The second is the running instance of the&nbsp;ps&nbsp;program itself.The first col-<br>umn,&nbsp;labeled&nbsp;PID,&nbsp;displays the process ID of each.<br>
+For a more detailed look at what’s running on your GNU/Linux system,&nbsp;invoke<br>
+this:<br>
+% ps -e -o pid,ppid,command<br>
+The&nbsp;-e&nbsp;option&nbsp;instructs&nbsp;ps&nbsp;to display all processes running on the system.The<br>-o&nbsp;pid,ppid,command&nbsp;option tells&nbsp;ps&nbsp;what information to show about each process—<br>in this case,&nbsp;the process ID,&nbsp;the parent process ID,&nbsp;and the command running in this<br>process.<br>
+ps&nbsp;<b>Output Formats</b><br>
+With the&nbsp;-o&nbsp;option to the&nbsp;ps&nbsp;command, you specify the information about processes that you want in<br>
+the output as a comma-separated list. For example,&nbsp;ps&nbsp;-o&nbsp;pid,user,start_time,command&nbsp;displays<br>
+the process ID, the name of the user owning the process, the wall clock time at which the process<br>
+started, and the command running in the process. See the man page for&nbsp;ps&nbsp;for the full list of field codes.<br>
+You can use the&nbsp;-f&nbsp;(full listing),&nbsp;-l&nbsp;(long listing), or&nbsp;-j&nbsp;(jobs listing) options instead to get three differ-<br>
+ent preset listing formats.<br>
+Here are the first few lines and last few lines of output from this command on my&nbsp;<br>system.You may see different output,&nbsp;depending on what’s running on your system.<br>
+% ps -e -o pid,ppid,command<br>
+PID &nbsp;PPID COMMAND<br>
+1 &nbsp; &nbsp; 0 init [5]<br>2 &nbsp; &nbsp; 1 [kflushd]<br>3 &nbsp; &nbsp; 1 [kupdate]<br>
+...<br>21725 21693 xterm<br>21727 21725 bash<br>21728 21727 ps -e -o pid,ppid,command<br>
+Note that the parent process ID of the&nbsp;ps&nbsp;command,&nbsp;21727,&nbsp;is the process ID of&nbsp;bash,<br>the shell from which I invoked&nbsp;ps.The parent process ID of&nbsp;bash&nbsp;is in turn 21725,&nbsp;the<br>process ID of the&nbsp;xterm&nbsp;program in&nbsp;which the shell is running.<br>
+<b>3.1.3</b><br>
+<b>Killing a Process</b><br>
+You can&nbsp;kill a running process with the&nbsp;kill&nbsp;command.&nbsp;Simply specify on the com-<br>mand line the process ID of the process to be killed.<br>
+The&nbsp;kill&nbsp;command works by&nbsp;sending the process a&nbsp;SIGTERM,&nbsp;or termination,<br>
+signal.1&nbsp;This causes the process to terminate,&nbsp;unless the executing program explicitly<br>handles or masks the&nbsp;SIGTERM&nbsp;signal.&nbsp;Signals are described in Section 3.3,&nbsp;“Signals.”<br>
+1.You can also use the&nbsp;kill&nbsp;command to send other signals to a process.This is described in<br>
+Section 3.4,&nbsp;“Process Termination.”<br>
+<hr>
+<A name=4></a>04 0430 CH03 &nbsp;5/22/01 &nbsp;10:13 AM &nbsp;Page 48<br>
+<b>48</b><br>
+<b>Chapter 3</b><br>
+<b>Processes</b><br>
+<b>3.2</b><br>
+<b>Creating Processes</b><br>
+Two common techniques are used for creating a new process.The first is relatively<br>simple but should be used sparingly because it is inefficient and has considerably&nbsp;<br>security risks.The second technique is more complex but provides greater flexibility,<br>speed,&nbsp;and security.<br>
+<b>3.2.1</b><br>
+<b>Using&nbsp;<i>system</i></b><br>
+The&nbsp;system&nbsp;function in the standard C library provides an easy way&nbsp;to execute a&nbsp;<br>command from within a program,&nbsp;much as if the command had been typed into a<br>shell.&nbsp;In fact,&nbsp;system&nbsp;creates a subprocess running the standard Bourne shell (/bin/sh)<br>and hands the command to that shell for execution.&nbsp;For example,&nbsp;this program in<br>Listing 3.2 invokes the&nbsp;ls&nbsp;command to display the contents of the root directory,&nbsp;as if<br>you typed&nbsp;ls&nbsp;-l&nbsp;/&nbsp;into a shell.<br>
+Listing 3.2<br>
+<b>(<i>system.c</i></b><b>) Using the&nbsp;<i>system&nbsp;</i></b><b>Call</b><br>
+#include &lt;stdlib.h&gt;<br>
+int main ()<br>{<br>
+int return_value;<br>return_value = system (“ls -l /”);<br>return return_value;<br>
+}<br>
+The&nbsp;system&nbsp;function returns the exit status of the shell command.&nbsp;If the shell itself<br>cannot be run,&nbsp;system&nbsp;returns 127;&nbsp;if another error occurs,&nbsp;system&nbsp;returns&nbsp;–1.<br>
+Because the&nbsp;system&nbsp;function uses a shell to invoke&nbsp;your command,&nbsp;it’s subject to<br>
+the features,&nbsp;limitations,&nbsp;and security flaws of the system’s shell.You can’t rely on the<br>availability of any particular version of the Bourne shell.&nbsp;On many UNIX systems,<br>/bin/sh&nbsp;is a symbolic link to another shell.&nbsp;For instance,&nbsp;on most GNU/Linux sys-<br>tems,&nbsp;/bin/sh&nbsp;points to&nbsp;bash&nbsp;(the Bourne-Again SHell),&nbsp;and different GNU/Linux<br>distributions use different versions of&nbsp;bash.&nbsp;Invoking a program with root privilege<br>with the&nbsp;system&nbsp;function,&nbsp;for instance,&nbsp;can have&nbsp;different results on different<br>GNU/Linux systems.Therefore,&nbsp;it’s preferable to use the&nbsp;fork&nbsp;and&nbsp;exec&nbsp;method for<br>creating&nbsp;processes.<br>
+<b>3.2.2</b><br>
+<b>Using&nbsp;<i>fork&nbsp;</i></b><b>and&nbsp;<i>exec</i></b><br>
+The DOS and&nbsp;Windows&nbsp;API contains the&nbsp;spawn&nbsp;family of functions.These functions<br>take as an argument the name of a program to run and create a new process instance<br>of that program.&nbsp;Linux doesn’t contain a single function that does all this in one step.<br>Instead,&nbsp;Linux provides one function,&nbsp;fork,&nbsp;that makes a child process that is an exact<br>
+<hr>
+<A name=5></a>04 0430 CH03 &nbsp;5/22/01 &nbsp;10:13 AM &nbsp;Page 49<br>
+<b>3.2</b><br>
+<b>Creating Processes</b><br>
+<b>49</b><br>
+copy of its parent process.&nbsp;Linux provides another set of functions,&nbsp;the&nbsp;exec&nbsp;family,&nbsp;that<br>causes a particular process to cease being an instance of one program and to instead<br>become an instance of another program.To&nbsp;spawn a new process,&nbsp;you first use&nbsp;fork&nbsp;to<br>make a copy of the current process.Then you use&nbsp;exec&nbsp;to transform one of these<br>processes into an instance of the program you want to spawn.<br>
+<b>Calling&nbsp;<i>fork</i></b><br>
+When a program calls&nbsp;fork,&nbsp;a&nbsp;duplicate process,&nbsp;called the&nbsp;<i>child process</i>,&nbsp;is created.The<br>parent process continues executing the program from the point that&nbsp;fork&nbsp;was called.<br>The child process,&nbsp;too,&nbsp;executes the same program from the same place.<br>
+So how do the two processes differ? First,&nbsp;the child process is a new process and<br>
+therefore has a new process ID,&nbsp;distinct from its parent’s process ID.&nbsp;One way&nbsp;for a<br>program to distinguish whether it’s in the parent process or the child process is to call<br>getpid.&nbsp;However,&nbsp;the&nbsp;fork&nbsp;function provides different return values to the parent and<br>child processes—one process&nbsp;“goes in”&nbsp;to the&nbsp;fork&nbsp;call,&nbsp;and two processes&nbsp;“come out,”<br>with different return values.The return value in the parent process is the process ID of<br>the child.The return value in the child process is zero.&nbsp;Because no process ever has a<br>process ID of zero,&nbsp;this makes it easy for the program whether it is now running as the<br>parent or the child process.<br>
+Listing 3.3 is an example of using&nbsp;fork&nbsp;to duplicate a program’s process.&nbsp;Note that<br>
+the first block of the&nbsp;if&nbsp;statement is executed only in the parent process,&nbsp;while the<br>else&nbsp;clause is executed in the child process.<br>
+Listing 3.3<br>
+<b>(&nbsp;<i>fork.c</i></b><b>) Using&nbsp;<i>fork&nbsp;</i></b><b>to Duplicate a Program’s Process</b><br>
+#include &lt;stdio.h&gt;<br>#include &lt;sys/types.h&gt;<br>#include &lt;unistd.h&gt;<br>
+int main ()<br>{<br>
+pid_t child_pid;<br>
+printf (“the main program process ID is %d\n”, (int) getpid ());<br>
+child_pid = fork ();<br>if (child_pid != 0) {<br>
+printf (“this is the parent process, with id %d\n”, (int) getpid ());<br>printf (“the child’s process ID is %d\n”, (int) child_pid);<br>
+}<br>else&nbsp;<br>
+printf (“this is the child process, with id %d\n”, (int) getpid ());<br>
+return 0;<br>
+}<br>
+<hr>
+<A name=6></a>04 0430 CH03 &nbsp;5/22/01 &nbsp;10:13 AM &nbsp;Page 50<br>
+<b>50</b><br>
+<b>Chapter 3</b><br>
+<b>Processes</b><br>
+<b>Using the&nbsp;<i>exec&nbsp;</i></b><b>Family</b><br>
+The&nbsp;exec&nbsp;functions replace the program running in a process with another program.<br>When a program calls an&nbsp;exec&nbsp;function,&nbsp;that process immediately ceases executing that<br>program and begins executing a new program from the beginning,&nbsp;assuming that the<br>exec&nbsp;call doesn’t encounter an error.<br>
+Within the&nbsp;exec&nbsp;family,&nbsp;there are functions that vary&nbsp;slightly in their capabilities<br>
+and how they are called.<br>
+n<br>
+Functions that contain the letter&nbsp;<i>p&nbsp;</i>in their names (execvp&nbsp;and&nbsp;execlp) accept a<br>program name and search for a program by&nbsp;that name in the current execution<br>path;&nbsp;functions that don’t contain the&nbsp;<i>p&nbsp;</i>must be given the full path of the pro-<br>gram to be executed.<br>
+n<br>
+Functions that contain the letter&nbsp;v&nbsp;in their names (execv,&nbsp;execvp,&nbsp;and&nbsp;execve)<br>accept the argument list for the new program as a NULL-terminated array of<br>pointers to strings.&nbsp;Functions that contain the letter&nbsp;<i>l&nbsp;</i>(execl,&nbsp;execlp,&nbsp;and<br>execle) accept the argument list using the C language’s varargs mechanism.<br>
+n<br>
+Functions that contain the letter&nbsp;<i>e&nbsp;</i>in their names (execve&nbsp;and&nbsp;execle) accept an<br>additional argument,&nbsp;an array of environment variables.The argument should be<br>a NULL-terminated array of pointers to character strings.&nbsp;Each character string<br>should be of the form&nbsp;“VARIABLE=value”.<br>
+Because&nbsp;exec&nbsp;replaces the calling program with another one,&nbsp;it never returns unless an<br>error occurs.<br>
+The argument list passed to the program is analogous to the command-line argu-<br>
+ments that you specify to a program when you run it from the shell.They are available<br>through the&nbsp;argc&nbsp;and&nbsp;argv&nbsp;parameters to&nbsp;main.&nbsp;Remember,&nbsp;when a program is<br>invoked from the shell,&nbsp;the shell sets the first element of the argument list&nbsp;argv[0]) to<br>the name of the program,&nbsp;the second element of the argument list (argv[1]) to the<br>first command-line argument,&nbsp;and so on.When you use an&nbsp;exec&nbsp;function in your pro-<br>grams,&nbsp;you,&nbsp;too,&nbsp;should pass the name of the function as the first element of the argu-<br>ment&nbsp;list.<br>
+<b>Using&nbsp;<i>fork&nbsp;</i></b><b>and&nbsp;<i>exec&nbsp;</i></b><b>Together</b><br>
+A common pattern to run a subprogram within a program is first to fork the process<br>and then exec the subprogram.This allows the calling program to continue execution<br>in the parent process while the calling program is replaced by&nbsp;the subprogram in the<br>child process.<br>
+The program in Listing 3.4,&nbsp;like Listing 3.2,&nbsp;lists the contents of the root directory<br>
+using the&nbsp;ls&nbsp;command.&nbsp;Unlike the previous example,&nbsp;though,&nbsp;it invokes the&nbsp;ls&nbsp;com-<br>mand directly,&nbsp;passing it the command-line arguments&nbsp;-l&nbsp;and&nbsp;/&nbsp;rather than invoking it<br>through a shell.<br>
+<hr>
+<A name=7></a>04 0430 CH03 &nbsp;5/22/01 &nbsp;10:13 AM &nbsp;Page 51<br>
+<b>3.2</b><br>
+<b>Creating Processes</b><br>
+<b>51</b><br>
+Listing 3.4<br>
+<b>(&nbsp;<i>fork-exec.c</i></b><b>) Using&nbsp;<i>fork&nbsp;</i></b><b>and&nbsp;<i>exec&nbsp;</i></b><b>Together</b><br>
+#include &lt;stdio.h&gt;<br>#include &lt;stdlib.h&gt;<br>#include &lt;sys/types.h&gt;<br>#include &lt;unistd.h&gt;<br>
+/* Spawn a child process running a new program. PROGRAM is the name<br>
+of the program to run; the path will be searched for this program.<br>ARG_LIST is a NULL-terminated list of character strings to be<br>passed as the program’s argument list. Returns the process ID of<br>the spawned process. &nbsp;*/<br>
+int spawn (char* program, char** arg_list)<br>{<br>
+pid_t child_pid;<br>
+/* Duplicate this process. &nbsp;*/<br>child_pid = fork ();<br>if (child_pid != 0)<br>
+/* This is the parent process. &nbsp;*/<br>return child_pid;<br>
+else {<br>
+/* Now execute PROGRAM, searching for it in the path. &nbsp;*/<br>execvp (program, arg_list);<br>/* The execvp function returns only if an error occurs. &nbsp;*/<br>fprintf (stderr, “an error occurred in execvp\n”);<br>abort ();<br>
+}<br>
+}<br>
+int main ()<br>{<br>
+/* The argument list to pass to the “ls” command. &nbsp;*/<br>char* arg_list[] = {<br>
+“ls”, &nbsp; &nbsp; /* argv[0], the name of the program. &nbsp;*/<br>“-l”,&nbsp;<br>“/”,<br>NULL &nbsp; &nbsp; &nbsp;/* The argument list must end with a NULL. &nbsp;*/<br>
+};<br>
+/* Spawn a child process running the “ls” command. &nbsp;Ignore the<br>
+returned child process ID. &nbsp;*/<br>
+spawn (“ls”, arg_list);&nbsp;<br>
+printf (“done with main program\n”);<br>
+return 0;<br>
+}<br>
+<hr>
+<A name=8></a>04 0430 CH03 &nbsp;5/22/01 &nbsp;10:13 AM &nbsp;Page 52<br>
+<b>52</b><br>
+<b>Chapter 3</b><br>
+<b>Processes</b><br>
+<b>3.2.3</b><br>
+<b>Process Scheduling</b><br>
+Linux schedules the&nbsp;parent and child processes independently;&nbsp;there’s no guarantee of<br>which one will run first,&nbsp;or how long it will run before Linux interrupts it and lets the<br>other process (or some other process on the system) run.&nbsp;In particular,&nbsp;none,&nbsp;part,&nbsp;or all<br>of the&nbsp;ls&nbsp;command may run in the child process before the parent completes.2&nbsp;Linux<br>promises that each process will run eventually—no process will be completely starved<br>of execution resources.<br>
+You may specify that a process is less important—and should be given a lower priority<br>
+—by&nbsp;assigning it a higher&nbsp;<i>niceness&nbsp;</i>value.&nbsp;By default,&nbsp;every process has a niceness of zero.<br>A higher niceness value means that the process is given a lesser execution priority;<br>conversely,&nbsp;a&nbsp;process with a lower (that is,&nbsp;negative) niceness gets more execution time.<br>
+To&nbsp;run a program with a nonzero niceness,&nbsp;use the&nbsp;nice&nbsp;command,&nbsp;specifying the<br>
+niceness value with the&nbsp;-n&nbsp;option.&nbsp;For example,&nbsp;this is how you might invoke&nbsp;the<br>command&nbsp;“sort&nbsp;input.txt&nbsp;&gt;&nbsp;output.txt”,&nbsp;a&nbsp;long sorting operation,&nbsp;with a reduced<br>priority so that it doesn’t slow down the system too much:<br>
+% nice -n 10 sort input.txt &gt; output.txt<br>
+You can use the&nbsp;renice&nbsp;command to change the niceness of a running process from<br>the command line.<br>
+To&nbsp;change the niceness of a running process programmatically,&nbsp;use the&nbsp;nice&nbsp;func-<br>
+tion.&nbsp;Its argument is an increment value,&nbsp;which is added to the niceness value of the<br>process that calls it.&nbsp;Remember that a positive&nbsp;value raises the niceness value and thus<br>reduces the process’s execution priority.<br>
+Note that only a process with root privilege can run a process with a negative&nbsp;nice-<br>
+ness value or reduce the niceness value of a running process.This means that you may<br>specify negative&nbsp;values to the&nbsp;nice&nbsp;and&nbsp;renice&nbsp;commands only when logged in as<br>root,&nbsp;and only a process running as root can pass a negative&nbsp;value to the&nbsp;nice&nbsp;function.<br>This prevents ordinary users from grabbing execution priority&nbsp;away&nbsp;from&nbsp;others using<br>the&nbsp;system.<br>
+<b>3.3</b><br>
+<b>Signals</b><br>
+<i>Signals&nbsp;</i>are mechanisms for communicating with and manipulating processes in Linux.<br>The topic of signals is a large one;&nbsp;here we&nbsp;discuss some of the most important signals<br>and techniques that are used for controlling processes.<br>
+A signal is a special message sent to a process.&nbsp;Signals are asynchronous;&nbsp;when a<br>
+process receives a signal,&nbsp;it processes the signal immediately,&nbsp;without finishing the cur-<br>rent function or even the current line of code.There are several dozen different sig-<br>nals,&nbsp;each with a different meaning.&nbsp;Each signal type is specified by&nbsp;its signal number,<br>but in programs,&nbsp;you usually refer to a signal by&nbsp;its name.&nbsp;In Linux,&nbsp;these are defined<br>in&nbsp;/usr/include/bits/signum.h.&nbsp;(You shouldn’t include this header file directly in<br>your programs;&nbsp;instead,&nbsp;use&nbsp;&lt;signal.h&gt;.)<br>
+2.&nbsp;A method for serializing the two processes is presented in Section 3.4.1,&nbsp;“Waiting for<br>
+Process Termination.”<br>
+<hr>
+<A name=9></a>04 0430 CH03 &nbsp;5/22/01 &nbsp;10:13 AM &nbsp;Page 53<br>
+<b>3.3</b><br>
+<b>Signals</b><br>
+<b>53</b><br>
+When a process receives a signal,&nbsp;it may do one of several things,&nbsp;depending on the<br>
+signal’s&nbsp;<i>disposition</i>.&nbsp;For each signal,&nbsp;there is a&nbsp;<i>default disposition</i>,&nbsp;which determines what<br>happens to the process if the program does not specify some other behavior.&nbsp;For most<br>signal types,&nbsp;a program may specify some other behavior—either to ignore the signal<br>or to call a special&nbsp;<i>signal-handler&nbsp;</i>function to respond to the signal.&nbsp;If a signal handler is<br>used,&nbsp;the currently executing program is paused,&nbsp;the signal handler is executed,&nbsp;and,<br>when the signal handler returns,&nbsp;the program resumes.<br>
+The Linux system sends signals to processes in response to specific conditions.&nbsp;For<br>
+instance,&nbsp;SIGBUS&nbsp;(bus error),&nbsp;SIGSEGV&nbsp;(segmentation violation),&nbsp;and&nbsp;SIGFPE&nbsp;(floating<br>point exception) may be sent to a process that attempts to perform an illegal opera-<br>tion.The default disposition for these signals it to terminate the process and produce a<br>core file.<br>
+A process may also send a signal to another process.&nbsp;One common use of this<br>
+mechanism is to end another process by&nbsp;sending it a&nbsp;SIGTERM&nbsp;or&nbsp;SIGKILL&nbsp;signal.3<br>Another common use is to send a command to a running program.Two&nbsp;“user-<br>defined”&nbsp;signals are reserved for this purpose:&nbsp;SIGUSR1&nbsp;and&nbsp;SIGUSR2.The&nbsp;SIGHUP&nbsp;signal<br>is sometimes used for this purpose as well,&nbsp;commonly to wake&nbsp;up an idling program<br>or cause a program to reread its configuration files.<br>
+The&nbsp;sigaction&nbsp;function can be used to set a&nbsp;signal disposition.The first parameter<br>
+is the signal number.The next two parameters are pointers to&nbsp;sigaction&nbsp;structures;&nbsp;the<br>first of these contains the desired disposition for that signal number,&nbsp;while the second<br>receives the previous disposition.The most important field in the first or second<br>sigaction&nbsp;structure is&nbsp;sa_handler.&nbsp;It can take one of three values:<br>
+n<br>
+SIG_DFL,&nbsp;which specifies the default disposition for the signal.<br>
+n<br>
+SIG_IGN,&nbsp;which specifies that the signal should be ignored.<br>
+n<br>
+A pointer to a signal-handler function.The function should take one parameter,<br>the signal number,&nbsp;and return&nbsp;void.<br>
+Because signals are asynchronous,&nbsp;the main program may be in a very&nbsp;fragile state<br>when a signal is processed and thus while a signal handler function executes.<br>Therefore,&nbsp;you should avoid performing any I/O operations or calling most library<br>and system functions from signal handlers.<br>
+A signal handler should perform the minimum work necessary to respond to the<br>
+signal,&nbsp;and then return control to the main program (or terminate the program).&nbsp;In<br>most cases,&nbsp;this consists simply of recording the fact that a signal occurred.The main<br>program then checks periodically whether a signal has occurred and reacts accordingly.<br>
+It is possible for a signal handler to be interrupted by&nbsp;the delivery&nbsp;of another signal.<br>
+While this may sound like a rare occurrence,&nbsp;if it does occur,&nbsp;it will be very&nbsp;difficult to<br>diagnose and debug the problem.&nbsp;(This is an example of a race condition,&nbsp;discussed in<br>Chapter 4,&nbsp;“Threads,”&nbsp;Section 4.4,&nbsp;“Synchronization and Critical Sections.”) Therefore,<br>you should be very&nbsp;careful about what your program does in a signal handler.<br>
+3.What’s the difference?&nbsp;The&nbsp;SIGTERM&nbsp;signal asks a process to terminate;&nbsp;the process may<br>
+ignore the request by&nbsp;masking or ignoring the signal.The&nbsp;SIGKILL&nbsp;signal always kills the process<br>immediately because the process may not mask or ignore&nbsp;SIGKILL.<br>
+<hr>
+<A name=10></a>04 0430 CH03 &nbsp;5/22/01 &nbsp;10:13 AM &nbsp;Page 54<br>
+<b>54</b><br>
+<b>Chapter 3</b><br>
+<b>Processes</b><br>
+Even assigning a value to a global variable can be dangerous because the assignment<br>
+may actually be carried out in two or more machine instructions,&nbsp;and a second signal<br>may occur between them,&nbsp;leaving the variable in a corrupted state.&nbsp;If you use a global<br>variable to flag a signal from a signal-handler function,&nbsp;it should be of the special type<br>sig_atomic_t.&nbsp;Linux guarantees that assignments to variables of this type are per-<br>formed in a single instruction and therefore cannot be interrupted midway.&nbsp;In Linux,<br>sig_atomic_t&nbsp;is an ordinary&nbsp;int;&nbsp;in fact,&nbsp;assignments to integer types the size of&nbsp;int&nbsp;or<br>smaller,&nbsp;or to pointers,&nbsp;are atomic.&nbsp;If you want to write a program that’s portable to<br>any standard UNIX system,&nbsp;though,&nbsp;use&nbsp;sig_atomic_t&nbsp;for these global variables.<br>
+This program skeleton in Listing 3.5,&nbsp;for instance,&nbsp;uses a signal-handler function to<br>
+count the number of times that the program receives&nbsp;SIGUSR1,&nbsp;one of the signals<br>reserved for application&nbsp;use.<br>
+Listing 3.5<br>
+<b>(<i>sigusr1.c</i></b><b>) Using a Signal Handler</b><br>
+#include &lt;signal.h&gt;<br>#include &lt;stdio.h&gt;<br>#include &lt;string.h&gt;<br>#include &lt;sys/types.h&gt;<br>#include &lt;unistd.h&gt;<br>
+sig_atomic_t sigusr1_count = 0;<br>
+void handler (int signal_number)<br>{<br>
+++sigusr1_count;<br>
+}<br>
+int main ()<br>{<br>
+struct sigaction sa;<br>memset (&amp;sa, 0, sizeof (sa));<br>sa.sa_handler = &amp;handler;<br>sigaction (SIGUSR1, &amp;sa, NULL);<br>
+/* Do some lengthy stuff here. &nbsp;*/<br>/* ... &nbsp;*/<br>
+printf (“SIGUSR1 was raised %d times\n”, sigusr1_count);<br>return 0;<br>
+}<br>
+<hr>
+<A name=11></a>04 0430 CH03 &nbsp;5/22/01 &nbsp;10:13 AM &nbsp;Page 55<br>
+<b>3.4</b><br>
+<b>Process Termination</b><br>
+<b>55</b><br>
+<b>3.4</b><br>
+<b>Process Termination</b><br>
+Normally,&nbsp;a&nbsp;process terminates in one of two ways.&nbsp;Either the executing program calls<br>the&nbsp;exit&nbsp;function,&nbsp;or the program’s&nbsp;main&nbsp;function returns.&nbsp;Each process has an exit<br>code:&nbsp;a number that the process returns to its parent.The exit code is the argument<br>passed to the&nbsp;exit&nbsp;function,&nbsp;or the value returned from&nbsp;main.<br>
+A process may also terminate abnormally,&nbsp;in response to a signal.&nbsp;For instance,&nbsp;the<br>
+SIGBUS,&nbsp;SIGSEGV,&nbsp;and&nbsp;SIGFPE&nbsp;signals mentioned previously cause the process to termi-<br>nate.&nbsp;Other signals are used to terminate a process explicitly.The&nbsp;SIGINT&nbsp;signal is sent<br>to a process when the user attempts to end it by&nbsp;typing Ctrl+C in its terminal.The<br>SIGTERM&nbsp;signal is sent by&nbsp;the&nbsp;kill&nbsp;command.&nbsp;The default disposition for both of these<br>is to terminate the process.&nbsp;By calling the&nbsp;abort&nbsp;function,&nbsp;a process sends itself the<br>SIGABRT&nbsp;signal,&nbsp;which terminates the process and produces a core file.&nbsp;The most pow-<br>erful termination signal is&nbsp;SIGKILL,&nbsp;which ends a process immediately and cannot be<br>blocked or handled by&nbsp;a program.<br>
+Any of these signals can be sent using the&nbsp;kill&nbsp;command by&nbsp;specifying an extra<br>
+command-line flag;&nbsp;for instance,&nbsp;to end a troublesome process by&nbsp;sending it a&nbsp;SIGKILL,<br>invoke&nbsp;the following,&nbsp;where&nbsp;pid&nbsp;is its process ID:<br>
+% kill -KILL pid<br>
+To&nbsp;send a signal from a program,&nbsp;use the&nbsp;kill&nbsp;function.The first parameter is the tar-<br>get process ID.The second parameter is the signal number;&nbsp;use&nbsp;SIGTERM&nbsp;to simulate the<br>default behavior of the&nbsp;kill&nbsp;command.&nbsp;For instance,&nbsp;where&nbsp;child&nbsp;pid&nbsp;contains the<br>process ID of the child process,&nbsp;you can use the&nbsp;kill&nbsp;function to terminate a child<br>process from the parent by&nbsp;calling it like this:<br>
+kill (child_pid, SIGTERM);<br>
+Include the&nbsp;&lt;sys/types.h&gt;&nbsp;and&nbsp;&lt;signal.h&gt;&nbsp;headers if you use the&nbsp;kill&nbsp;function.<br>
+By convention,&nbsp;the&nbsp;exit code is used to indicate whether the program executed<br>
+correctly.&nbsp;An exit code of zero indicates correct execution,&nbsp;while a nonzero exit code<br>indicates that an error occurred.&nbsp;In the latter case,&nbsp;the particular value returned may<br>give&nbsp;some indication of the nature of the error.&nbsp;It’s a good idea to stick with this con-<br>vention in your programs because other components of the GNU/Linux system<br>assume this behavior.&nbsp;For instance,&nbsp;shells assume this convention when you connect<br>multiple programs with the&nbsp;&amp;&amp;&nbsp;(logical and) and&nbsp;||&nbsp;(logical or) operators.Therefore,<br>you should explicitly return zero from your&nbsp;main&nbsp;function,&nbsp;unless an error occurs.<br>
+<hr>
+<A name=12></a>04 0430 CH03 &nbsp;5/22/01 &nbsp;10:13 AM &nbsp;Page 56<br>
+<b>56</b><br>
+<b>Chapter 3</b><br>
+<b>Processes</b><br>
+With most shells,&nbsp;it’s possible to obtain the exit code of the most recently executed<br>
+program using the special&nbsp;$?&nbsp;variable.&nbsp;Here’s an example in which the&nbsp;ls&nbsp;command is<br>invoked twice and its exit code is displayed after each invocation.&nbsp;In the first case,&nbsp;ls<br>executes correctly and returns the exit code zero.&nbsp;In the second case,&nbsp;ls&nbsp;encounters an<br>error (because the filename specified on the command line does not exist) and thus<br>returns a nonzero exit code.<br>
+% ls /<br>bin &nbsp; coda &nbsp;etc &nbsp; lib &nbsp; &nbsp; &nbsp; &nbsp; misc &nbsp;nfs &nbsp;proc &nbsp;sbin &nbsp;usr<br>boot &nbsp;dev &nbsp; home &nbsp;lost+found &nbsp;mnt &nbsp; opt &nbsp;root &nbsp;tmp &nbsp; var<br>% echo $?<br>0<br>% ls bogusfile<br>ls: bogusfile: No such file or directory<br>% echo $?<br>1<br>
+Note that even though the parameter type of the&nbsp;exit&nbsp;function is&nbsp;int&nbsp;and the&nbsp;main<br>function returns an&nbsp;int,&nbsp;Linux does not preserve&nbsp;the full 32 bits of the return code.&nbsp;In<br>fact,&nbsp;you should use exit codes only between zero and 127.&nbsp;Exit codes above&nbsp;128 have<br>a special meaning—when a process is terminated by&nbsp;a signal,&nbsp;its exit code is 128 plus<br>the signal number.<br>
+<b>3.4.1</b><br>
+<b>Waiting for Process&nbsp;Termination</b><br>
+If you typed in and ran the&nbsp;fork&nbsp;and&nbsp;exec&nbsp;example in Listing 3.4,&nbsp;you may have<br>noticed that the output from the&nbsp;ls&nbsp;program often appears after the&nbsp;“main program”<br>has already completed.That’s because the child process,&nbsp;in which&nbsp;ls&nbsp;is run,&nbsp;is sched-<br>uled independently of the parent process.&nbsp;Because Linux is a multitasking operating<br>system,&nbsp;both processes appear to execute simultaneously,&nbsp;and you can’t predict whether<br>the&nbsp;ls&nbsp;program will have&nbsp;a chance to run before or after the parent process runs.<br>
+In some situations,&nbsp;though,&nbsp;it is desirable for the parent process to wait until one or<br>
+more child processes have&nbsp;completed.This can be done with the&nbsp;wait&nbsp;family of system<br>calls.These functions allow you to wait for a process to finish executing,&nbsp;and enable<br>the parent process to retrieve&nbsp;information about its child’s termination.There are four<br>different system calls in the&nbsp;wait&nbsp;family;&nbsp;you can choose to get a little or a lot of infor-<br>mation about the process that exited,&nbsp;and you can choose whether you care about<br>which child process terminated.<br>
+<b>3.4.2</b><br>
+<b>The&nbsp;<i>wait&nbsp;</i></b><b>System Calls</b><br>
+The simplest such function is called simply&nbsp;wait.&nbsp;It blocks the calling process until one<br>of its child processes exits (or an error occurs).&nbsp;It returns a status code via an integer<br>pointer argument,&nbsp;from which you can extract information about how the child process<br>exited.&nbsp;For instance,&nbsp;the&nbsp;WEXITSTATUS&nbsp;macro extracts the child process’s exit code.<br>
+<hr>
+<A name=13></a>04 0430 CH03 &nbsp;5/22/01 &nbsp;10:13 AM &nbsp;Page 57<br>
+<b>3.4</b><br>
+<b>Process Termination</b><br>
+<b>57</b><br>
+You can use the&nbsp;WIFEXITED&nbsp;macro to determine from a child process’s exit status<br>
+whether that process exited normally (via the&nbsp;exit&nbsp;function or returning from&nbsp;main)<br>or died from an unhandled signal.&nbsp;In the latter case,&nbsp;use the&nbsp;WTERMSIG&nbsp;macro to extract<br>from its exit status the signal number by&nbsp;which it died.<br>
+Here is the&nbsp;main&nbsp;function from the&nbsp;fork&nbsp;and&nbsp;exec&nbsp;example again.This time,&nbsp;the<br>
+parent process calls&nbsp;wait&nbsp;to wait until the child process,&nbsp;in which the&nbsp;ls&nbsp;command<br>executes,&nbsp;is finished.<br>
+int main ()<br>{<br>
+int child_status;<br>
+/* The argument list to pass to the “ls” command. &nbsp;*/<br>char* arg_list[] = {<br>
+“ls”, &nbsp; &nbsp; /* argv[0], the name of the program. &nbsp;*/<br>“-l”,&nbsp;<br>“/”,<br>NULL &nbsp; &nbsp; &nbsp;/* The argument list must end with a NULL. &nbsp;*/<br>
+};<br>
+/* Spawn a child process running the “ls” command. &nbsp;Ignore the<br>
+returned child process ID. &nbsp;*/<br>
+spawn (“ls”, arg_list);&nbsp;<br>
+/* Wait for the child process to complete. &nbsp;*/<br>wait (&amp;child_status);<br>if (WIFEXITED (child_status))<br>
+printf (“the child process exited normally, with exit code %d\n”,<br>
+WEXITSTATUS (child_status));<br>
+else<br>
+printf (“the child process exited abnormally\n”);<br>
+return 0;<br>
+}<br>
+Several similar system calls are available in Linux,&nbsp;which are more flexible or provide<br>more information about the exiting child process.The&nbsp;waitpid&nbsp;function can be used<br>to wait for a specific child process to exit instead of any child process.The&nbsp;wait3&nbsp;func-<br>tion returns CPU usage statistics about the exiting child process,&nbsp;and the&nbsp;wait4<br>function allows you to specify additional options about which processes&nbsp;to wait for.<br>
+<b>3.4.3</b><br>
+<b>Zombie Processes</b><br>
+If a child process&nbsp;terminates while its parent is calling a&nbsp;wait&nbsp;function,&nbsp;the child<br>process vanishes and its termination status is passed to its parent via the&nbsp;wait&nbsp;call.&nbsp;But<br>what happens when a child process terminates and the parent is not calling&nbsp;wait?<br>Does it simply vanish? No,&nbsp;because then information about its termination—such as<br>whether it exited normally and,&nbsp;if so,&nbsp;what its exit status is—would be lost.&nbsp;Instead,<br>when a child process terminates,&nbsp;is becomes a zombie process.<br>
+<hr>
+<A name=14></a>04 0430 CH03 &nbsp;5/22/01 &nbsp;10:13 AM &nbsp;Page 58<br>
+<b>58</b><br>
+<b>Chapter 3</b><br>
+<b>Processes</b><br>
+A&nbsp;<i>zombie process&nbsp;</i>is a process that has terminated but has not been cleaned up yet.&nbsp;It<br>
+is the responsibility of the parent process to clean up its zombie children.The&nbsp;wait<br>functions do this,&nbsp;too,&nbsp;so it’s not necessary to track whether your child process is still<br>executing before waiting for it.&nbsp;Suppose,&nbsp;for instance,&nbsp;that a program forks a child<br>process,&nbsp;performs some other computations,&nbsp;and then calls&nbsp;wait.&nbsp;If the child process<br>has not terminated at that point,&nbsp;the parent process will block in the&nbsp;wait&nbsp;call until the<br>child process finishes.&nbsp;If the child process finishes before the parent process calls&nbsp;wait,<br>the child process becomes a zombie.When the parent process calls&nbsp;wait,&nbsp;the zombie<br>child’s termination status is extracted,&nbsp;the child process is deleted,&nbsp;and the&nbsp;wait&nbsp;call<br>returns immediately.<br>
+What happens if the parent does not clean up its children?&nbsp;They stay around in the<br>
+system,&nbsp;as zombie processes.The program in Listing 3.6 forks a child process,&nbsp;which<br>terminates immediately and then goes to sleep for a minute,&nbsp;without ever cleaning up<br>the child process.<br>
+Listing 3.6<br>
+<b>(<i>zombie.c</i></b><b>) Making a Zombie Process</b><br>
+#include &lt;stdlib.h&gt;<br>#include &lt;sys/types.h&gt;<br>#include &lt;unistd.h&gt;<br>
+int main ()<br>{<br>
+pid_t child_pid;<br>
+/* Create a child process. &nbsp;*/<br>child_pid = fork ();<br>if (child_pid &gt; 0) {<br>
+/* This is the parent process. &nbsp;Sleep for a minute. &nbsp;*/<br>sleep (60);<br>
+}<br>else {<br>
+/* This is the child process. &nbsp;Exit immediately. &nbsp;*/<br>exit (0);<br>
+}<br>return 0;<br>
+}<br>
+Try compiling this file to an executable named&nbsp;make-zombie.&nbsp;Run it,&nbsp;and while it’s still<br>running,&nbsp;list the processes on the system by&nbsp;invoking the following command in<br>another window:<br>
+% ps -e -o pid,ppid,stat,cmd<br>
+<hr>
+<A name=15></a>04 0430 CH03 &nbsp;5/22/01 &nbsp;10:13 AM &nbsp;Page 59<br>
+<b>3.4</b><br>
+<b>Process Termination</b><br>
+<b>59</b><br>
+This lists the process ID,&nbsp;parent process ID,&nbsp;process status,&nbsp;and process command&nbsp;<br>line.&nbsp;Observe&nbsp;that,&nbsp;in addition to the parent&nbsp;make-zombie&nbsp;process,&nbsp;there is another<br>make-zombie&nbsp;process listed.&nbsp;It’s the child process;&nbsp;note that its parent process ID is&nbsp;<br>the process ID of the main&nbsp;make-zombie&nbsp;process.The child process is marked as<br>&lt;defunct&gt;,&nbsp;and its status code is Z,&nbsp;for zombie.<br>
+What happens when the main&nbsp;make-zombie&nbsp;program ends when the parent process<br>
+exits,&nbsp;without ever calling&nbsp;wait? Does the zombie process stay around? No—try&nbsp;<br>running&nbsp;ps&nbsp;again,&nbsp;and note that both of the&nbsp;make-zombie&nbsp;processes are gone.When a<br>program exits,&nbsp;its children are inherited by&nbsp;a special process,&nbsp;the&nbsp;init&nbsp;program,&nbsp;which<br>always runs with process ID of 1 (it’s the first process started when Linux boots).The<br>init&nbsp;process automatically cleans up any zombie child processes that&nbsp;it inherits.<br>
+<b>3.4.4</b><br>
+<b>Cleaning Up Children&nbsp;Asynchronously</b><br>
+If you’re&nbsp;using&nbsp;a child process simply to&nbsp;exec&nbsp;another program,&nbsp;it’s fine to call&nbsp;wait<br>immediately in the parent process,&nbsp;which will block until the child process completes.<br>But often,&nbsp;you’ll want the parent process to continue running,&nbsp;as one or more children<br>execute synchronously.&nbsp;How&nbsp;can you be sure that you clean up child processes that<br>have&nbsp;completed so that you don’t leave zombie processes,&nbsp;which consume system<br>resources,&nbsp;lying around?<br>
+One approach would be for the parent process to call&nbsp;wait3&nbsp;or&nbsp;wait4&nbsp;periodically,<br>
+to clean up zombie children.&nbsp;Calling&nbsp;wait&nbsp;for this purpose doesn’t work well because,<br>if no children have&nbsp;terminated,&nbsp;the call will block until one does.&nbsp;However,&nbsp;wait3&nbsp;and<br>wait4&nbsp;take an additional flag parameter,&nbsp;to which you can pass the flag value&nbsp;WNOHANG.<br>With this flag,&nbsp;the function&nbsp;runs in&nbsp;<i>nonblocking mode</i>—it will clean up a terminated<br>child process if there is one,&nbsp;or simply return if there isn’t.The return value of the call<br>is the process ID of the terminated child in the former case,&nbsp;or zero in the latter case.<br>
+A more elegant solution is to notify the parent process when a child terminates.<br>
+There are several ways to do this using the methods discussed in Chapter 5,<br>“Interprocess Communication,”&nbsp;but fortunately Linux does this for you,&nbsp;using signals.<br>When a child process terminates,&nbsp;Linux sends the parent process the&nbsp;SIGCHLD&nbsp;signal.<br>The default disposition of this signal is to do nothing,&nbsp;which is why you might not<br>have&nbsp;noticed it before.<br>
+Thus,&nbsp;an easy way to clean up child processes is by&nbsp;handling&nbsp;SIGCHLD.&nbsp;Of course,<br>
+when cleaning up the child process,&nbsp;it’s important to store its termination status if this<br>information is needed,&nbsp;because once the process is cleaned up using&nbsp;wait,&nbsp;that infor-<br>mation is no longer available.&nbsp;Listing 3.7 is what it looks like for a program to use a<br>SIGCHLD&nbsp;handler to clean up its child processes.<br>
+<hr>
+<A name=16></a>04 0430 CH03 &nbsp;5/22/01 &nbsp;10:13 AM &nbsp;Page 60<br>
+<b>60</b><br>
+<b>Chapter 3</b><br>
+<b>Processes</b><br>
+Listing 3.7<br>
+<b>(<i>sigchld.c</i></b><b>) Cleaning Up Children by&nbsp;Handling&nbsp;<i>SIGCHLD</i></b><br>
+#include &lt;signal.h&gt;<br>#include &lt;string.h&gt;<br>#include &lt;sys/types.h&gt;<br>#include &lt;sys/wait.h&gt;<br>
+sig_atomic_t child_exit_status;<br>
+void clean_up_child_process (int signal_number)<br>{<br>
+/* Clean up the child process. &nbsp;*/<br>int status;<br>wait (&amp;status);<br>/* Store its exit status in a global variable. &nbsp;*/<br>child_exit_status = status;<br>
+}<br>
+int main ()<br>{<br>
+/* Handle SIGCHLD by calling clean_up_child_process. &nbsp;*/<br>struct sigaction sigchld_action;<br>memset (&amp;sigchld_action, 0, sizeof (sigchld_action));<br>sigchld_action.sa_handler = &amp;clean_up_child_process;<br>sigaction (SIGCHLD, &amp;sigchld_action, NULL);<br>
+/* Now do things, including forking a child process. &nbsp;*/<br>/* ... &nbsp;*/<br>
+return 0;<br>
+}<br>
+Note how the signal handler stores the child process’s exit status in a global variable,<br>from which the main program can access it.&nbsp;Because the variable is assigned in a signal<br>handler,&nbsp;its type is&nbsp;sig_atomic_t.<br>
+<hr>
+</BODY>
+</HTML>

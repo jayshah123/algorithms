@@ -1,0 +1,14 @@
+
+
+
+Ctrl-C
+	Pressing this key causes the system to send an SIGINT to the running process , u can do the same by running the process in background and sending 
+a kill -2 [pid] via cmd.
+
+Ctrl-Z
+	Pressing this key causes the system to send a SIGSTP to the running process.
+
+pause() is a system call that waits for a signal
+
+i recommend run the process in background and use kill command from the console to send signals to the process,
+use man kill if required.

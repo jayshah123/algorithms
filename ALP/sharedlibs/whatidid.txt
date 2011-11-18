@@ -1,0 +1,10 @@
+edit test1.c
+gcc -c -fPIC test1.c --> test1.o 
+edit test2.c
+gcc -c -fPIC test2.c --> test2.o
+gcc -shared -fPIC -o libtest.so test1.o test2.o --> libtest.so
+edit app.c
+gcc -o app app.c -L. -ltest --> app
+
+to see the shared libs in app use command
+$ ldd app

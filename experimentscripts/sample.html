@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>cURL and libcurl</title>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
+<link rel="STYLESHEET" type="text/css" href="/curl.css">
+<link rel="shortcut icon" href="http://curl.haxx.se/favicon.ico">
+<meta name="description" content="curl is a command line tool for transferring data with URL syntax, supporting DICT, FILE, FTP, FTPS, GOPHER, HTTP, HTTPS, IMAP, IMAPS, LDAP, LDAPS, POP3, POP3S, RTMP, RTSP, SCP, SFTP, SMTP, SMTPS, TELNET and TFTP. Curl supports HTTPS certificates, HTTP POST, HTTP PUT, FTP uploading, kerberos, HTTP form based upload, proxies, cookies, user+password authentication, file transfer resume, http proxy tunneling and a busload of other useful tricks">
+</head>
+<BODY bgcolor="#ffffff" text="#000000" LINK="#0000ff" VLINK="#808080" ALINK="red">
+<!-- first-line-in-body -->
+<table width="100%"><tr valign="top"><td> <a href="http://curl.haxx.se/"><img border="0" src="http://curl.haxx.se/ds-curlicon.png"
+width="99" height="37" alt="cURL"></a></td>
+<td align="center">
+<table><tr valign="top"><td>
+<script type="text/javascript"><!--
+google_ad_client = "pub-9313125053076989";
+google_alternate_color = "3333FF";
+google_ad_width = 468;
+google_ad_height = 60;
+google_ad_format = "468x60_as";
+google_ad_channel ="9544108509";
+google_ad_type = "text";
+google_color_border = "000000";
+google_color_bg = "F0F0F0";
+google_color_link = "0000ff";
+google_color_url = "008000";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</td><td>
+<a href="http://www.haxx.se/curl.html"><img border="0" width="150" height="60"
+src="http://curl.haxx.se/ad/haxx-curl-ad3.png" alt="Haxx ad"></a>
+</td>
+</tr></table>
+</td>
+<td align="right"><a
+href="http://curl.haxx.se/libcurl/"><img src="http://curl.haxx.se/ds-libcurlicon.png" border="0" alt="libcurl"
+width="99" height="37"></a></td></tr></table>
+<table cellspacing="0" cellpadding="5"><tr><td valign="top" align="left">
+<div class="mainmenu">
+<div class="itemselect">Front Page</div>
+<div><a href="http://curl.haxx.se/download.html" class="menuitem" title="Get curl packages">Download</a></div>
+<div><a href="http://curl.haxx.se/changes.html" class="menuitem" title="The changes done in releases">Changelog</a></div>
+<div><a href="http://curl.haxx.se/docs/" class="menuitem" title="curl documentation">Docs &raquo;</a></div>
+<div><a href="http://curl.haxx.se/news.html" class="menuitem" title="Recent events and news in the project">News</a></div>
+<div><a href="http://curl.haxx.se/mail/" class="menuitem" title="Mailing List info and archives">Mailing Lists</a></div>
+<div><a href="http://curl.haxx.se/dev/" class="menuitem" title="Resources for development and developers">Development &raquo;</a></div>
+<div><a href="http://curl.haxx.se/libcurl/" class="menuitem" title="libcurl web site section">libcurl &raquo;</a></div>
+<div><a href="http://curl.haxx.se/support.html" class="menuitem" title="Buy commercial support from these companies">Support</a></div>
+<div><a href="http://curl.haxx.se/search.html" class="menuitem" title="Search the curl web site">Search</a></div>
+</div>
+<p>
+<p>
+<a href="http://sourceforge.net/projects/curl/"><img src="http://sourceforge.net/sflogo.php?group_id=976&amp;type=8" width="80" height="15" border="0" alt="curl's project page on SourceForge.net"></a>
+<p>
+ <a href="http://curl.haxx.se/sponsors.html">Sponsors</a>:<br>
+<a href="http://www.haxx.se/">Haxx</a>
+</td><td valign="top" align="left" width="100%">
+<center><img src="/pix/curl-refined.jpg" width="471" height="175" alt="cURL">
+</center>
+<h1 class="pagetitle"> cURL groks URLs </h1>
+<p class="ingres">
+  curl is a command line tool for transferring data with URL syntax,
+  supporting DICT, FILE, FTP, FTPS, GOPHER, HTTP, HTTPS, IMAP, IMAPS, LDAP,
+  LDAPS, POP3, POP3S, RTMP, RTSP, SCP, SFTP, SMTP, SMTPS, TELNET and
+  TFTP. curl supports SSL certificates, HTTP POST, HTTP PUT, FTP uploading,
+  HTTP form based upload, proxies, cookies, user+password authentication
+  (Basic, Digest, NTLM, Negotiate, kerberos...), file transfer resume, proxy
+  tunneling and a busload of other <a href="docs/features.html">useful
+  tricks</a>.
+</p>
+<table><tr valign="top"><td width="60%">
+<p>
+  Curl is free and <a href="docs/copyright.html" title="Curl and libcurl are licensed under a MIT/X derivate license">open software</a> that compiles and
+  runs under a wide variety of operating systems. Curl exists thanks to
+  efforts from <a href="docs/thanks.html" title="More than 800 named contributors">many contributors</a>.
+<p>
+  <b>The most recent stable version of curl is version 7.23.1</b>, released
+  on 17th of November 2011.  Currently, 3 of the <a href="download.html" title="We have a very extensive download page!">listed archives</a> are of the latest
+  version.  </td><td>
+<p>
+  Use the cURL <a href="/docs/manpage.html" title="man page for curl">command
+  line tool</a> or use <a href="libcurl/" title="bindings for everyone!">libcurl</a> from within your own programs.
+<p>
+<div class="phpbox">
+  Found a bug or a flaw? <a href="/docs/bugs.html">Report a bug!</a>
+</div>
+</td></tr></table>
+<p>
+<div style="float: right; margin-left: 8px;">
+<script src="http://widgets.twimg.com/j/2/widget.js"></script>
+<script>
+new TWTR.Widget({
+  version: 2,
+  type: 'search',
+  search: 'pycurl OR libcurl OR curl.haxx.se',
+  interval: 6000,
+  title: 'curl stuff',
+  subject: '',
+  width: 250,
+  height: 300,
+  theme: {
+    shell: {
+      background: '#0000ff',
+      color: '#ffffff'
+    },
+    tweets: {
+      background: '#ffffff',
+      color: '#444444',
+      links: '#1985b5'
+    }
+  },
+  features: {
+    scrollbar: false,
+    loop: true,
+    live: true,
+    hashtags: true,
+    timestamp: true,
+    avatars: true,
+    toptweets: true,
+    behavior: 'default'
+  }
+}).render().start();
+</script>
+</div>
+<table align="center" class="news">
+<caption>Latest News</caption>
+ <tr class="newstitle"><td>curl and libcurl 7.23.1</td>
+ <td class="newsdate">November 17 2011</td></tr>
+ <tr><td colspan="2">
+  The curl team proudly presents <a href="download.html">curl and libcurl
+  7.23.1</a>. Read about the single Windows-only fix on the <a
+  href="changes.html#7_23_1">changes</a> page.
+<p>
+  Yes, if you're already on 7.23.0 this upgrade only makes sense if you're
+  using the curl tool on windows.
+ </td></tr>
+ <tr class="newstitle"><td>curl and libcurl 7.23.0</td>
+ <td class="newsdate">November 15 2011</td></tr>
+ <tr><td colspan="2">
+  The curl team proudly presents <a href="download.html">curl and libcurl
+  7.23.0</a>. Read about the news, the fixes and the changes on
+  the <a href="changes.html#7_23_0">changes</a> page.
+ </td></tr>
+</table>
+<p align="right">
+ <small><a href="news.html">more news</a></small>
+<p>
+<table align="center" class="latestmail" cellpadding="2" cellspacing="0"
+ summary="lists several recent curl mailing list postings">
+<caption>Recent Mails on the Mailing Lists</caption>
+<tr class="tabletop">
+<th>Subject</th>
+<th>GMT</th>
+<th>Author</th>
+<th>Thread</th>
+<th>List</th>
+</tr>
+<tr class="even"><td><a title="Download Averaging Issue" href="http://curl.haxx.se/mail/lib-2011-11/0211.html">Download Averaging Issue</a></td>
+<td>Friday 12:26</td><td>Daniel Stenberg</td><td>3 <a href="http://curl.haxx.se/mail/lib-2011-11/0176.html">first</a></td><td><a href="http://curl.haxx.se/mail/list.cgi?list=curl-library">libcurl</a></td></tr>
+<tr class="odd"><td><a title="[PATCH] Support for GnuTLS/nettle" href="http://curl.haxx.se/mail/lib-2011-11/0210.html">[PATCH] Support for GnuTLS/nettle</a></td>
+<td>Friday 12:24</td><td>Martin Storsjö</td><td>1</td><td><a href="http://curl.haxx.se/mail/list.cgi?list=curl-library">libcurl</a></td></tr>
+<tr class="even"><td><a title="Set CURLOPT_FTP_FILEMETHOD to CURLFTPMETHOD_NOCWD does not work when changing dir" href="http://curl.haxx.se/mail/lib-2011-11/0208.html">Set CURLOPT_FTP_FILEMETHOD to CURLFTPMET...</a></td>
+<td>Friday 12:10</td><td>Nuno Esculcas</td><td>1</td><td><a href="http://curl.haxx.se/mail/list.cgi?list=curl-library">libcurl</a></td></tr>
+<tr class="odd"><td><a title="Performance analysis &amp; issues found with SFTP" href="http://curl.haxx.se/mail/lib-2011-11/0207.html">Performance analysis &amp; issues found with...</a></td>
+<td>Friday 11:56</td><td>Daniel Stenberg</td><td>3 <a href="http://curl.haxx.se/mail/lib-2011-11/0204.html">first</a></td><td><a href="http://curl.haxx.se/mail/list.cgi?list=curl-library">libcurl</a></td></tr>
+<tr class="even"><td><a title="Possible libssh2_sftp_rename_ex bug?" href="http://curl.haxx.se/mail/lib-2011-11/0205.html">Possible libssh2_sftp_rename_ex bug?</a></td>
+<td>Friday 11:24</td><td>Jonas Schnelli</td><td>7</td><td><a href="http://curl.haxx.se/mail/list.cgi?list=curl-library">libcurl</a></td></tr>
+<tr class="odd"><td><a title="Curl command line too limit SFTP listing" href="http://curl.haxx.se/mail/archive-2011-11/0029.html">Curl command line too limit SFTP listing</a></td>
+<td>Friday 10:52</td><td>Faizel Isaacs</td><td>1</td><td><a href="http://curl.haxx.se/mail/list.cgi?list=curl-users">curl users</a></td></tr>
+<tr class="even"><td><a title="SSL session sharing support added to curl_share_setopt()" href="http://curl.haxx.se/mail/lib-2011-11/0203.html">SSL session sharing support added to cur...</a></td>
+<td>Friday 09:01</td><td>Alejandro Álvarez Ayllón</td><td>8 <a href="http://curl.haxx.se/mail/lib-2011-11/0116.html">first</a></td><td><a href="http://curl.haxx.se/mail/list.cgi?list=curl-library">libcurl</a></td></tr>
+<tr class="odd"><td><a title="equivalent to -d in pycurl" href="http://curl.haxx.se/mail/curlpython-2011-11/0002.html">equivalent to -d in pycurl</a></td>
+<td>Friday 07:22</td><td>Michael Wood</td><td>3 <a href="http://curl.haxx.se/mail/curlpython-2011-11/0000.html">first</a></td><td><a href="http://curl.haxx.se/mail/list.cgi?list=curl-and-python">Python</a></td></tr>
+<tr class="even"><td><a title="help: libCURL with epoll" href="http://curl.haxx.se/mail/lib-2011-11/0202.html">help: libCURL with epoll</a></td>
+<td>Friday 07:20</td><td>Daniel Stenberg</td><td>8 <a href="http://curl.haxx.se/mail/lib-2011-11/0128.html">first</a></td><td><a href="http://curl.haxx.se/mail/list.cgi?list=curl-library">libcurl</a></td></tr>
+<tr class="odd"><td><a title="PATCH: Do not allow multi interface to block trying to perform DNS on interface names" href="http://curl.haxx.se/mail/lib-2011-11/0201.html">PATCH: Do not allow multi interface to b...</a></td>
+<td>Friday 02:32</td><td>Jason Glasgow</td><td>8 <a href="http://curl.haxx.se/mail/lib-2011-11/0039.html">first</a></td><td><a href="http://curl.haxx.se/mail/list.cgi?list=curl-library">libcurl</a></td></tr>
+</table>
+</td></tr></table>
+<p>
+<a href="http://curl.haxx.se/donation.html"><img border="0" src="http://curl.haxx.se/pix/donate.png" alt="donate!"
+width="88" height="31"></a>
+<span class="aboutbox">
+Page updated November 18, 2011.<br>
+<a href="http://curl.haxx.se/about.html">web site info</a>
+</span>
+<center>
+<a class="bottomad" href="http://www.easyalgo.com/eaupload.aspx"
+title="Asp.net upload component">File upload with ASP.NET</a>
+</center>
+</BODY>
+</HTML>

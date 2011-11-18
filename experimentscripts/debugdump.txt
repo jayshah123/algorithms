@@ -1,0 +1,42 @@
+== Info: About to connect() to www.google.com port 80 (#0)
+== Info:   Trying 74.125.236.81... == Info: connected
+== Info: Connected to www.google.com (74.125.236.81) port 80 (#0)
+=> Send header, 153 bytes (0x99)
+0000: GET / HTTP/1.1
+0010: User-Agent: curl/7.19.7 (i486-pc-linux-gnu) libcurl/7.19.7 OpenS
+0050: SL/0.9.8o zlib/1.2.3.3 libidn/1.15
+0074: Host: www.google.com
+008a: Accept: */*
+0097: 
+<= Recv header, 20 bytes (0x14)
+0000: HTTP/1.1 302 Found
+<= Recv header, 36 bytes (0x24)
+0000: Location: http://www.google.co.in/
+<= Recv header, 24 bytes (0x18)
+0000: Cache-Control: private
+<= Recv header, 40 bytes (0x28)
+0000: Content-Type: text/html; charset=UTF-8
+<= Recv header, 157 bytes (0x9d)
+0000: Set-Cookie: PREF=ID=3362d6f0a2f7c14b:FF=0:TM=1321633982:LM=13216
+0040: 33982:S=YdjGyx9lY-BuT39f; expires=Sun, 17-Nov-2013 16:33:02 GMT;
+0080:  path=/; domain=.google.com
+<= Recv header, 37 bytes (0x25)
+0000: Date: Fri, 18 Nov 2011 16:33:02 GMT
+<= Recv header, 13 bytes (0xd)
+0000: Server: gws
+<= Recv header, 21 bytes (0x15)
+0000: Content-Length: 221
+<= Recv header, 33 bytes (0x21)
+0000: X-XSS-Protection: 1; mode=block
+<= Recv header, 29 bytes (0x1d)
+0000: X-Frame-Options: SAMEORIGIN
+<= Recv header, 2 bytes (0x2)
+0000: 
+<= Recv data, 221 bytes (0xdd)
+0000: <HTML><HEAD><meta http-equiv="content-type" content="text/html;c
+0040: harset=utf-8">.<TITLE>302 Moved</TITLE></HEAD><BODY>.<H1>302 Mov
+0080: ed</H1>.The document has moved.<A HREF="http://www.google.co.in/
+00c0: ">here</A>.
+00cd: </BODY></HTML>
+== Info: Connection #0 to host www.google.com left intact
+== Info: Closing connection #0
