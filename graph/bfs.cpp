@@ -10,6 +10,8 @@
 #define SZ 8
 
 int v[SZ];
+int p[SZ];
+int d[SZ];
 int g[SZ][SZ]={{0,1,0,0,1,0,0,0},
 				{1,0,0,0,0,1,0,0},
 				{0,0,0,1,0,1,1,0},
@@ -21,24 +23,42 @@ int g[SZ][SZ]={{0,1,0,0,1,0,0,0},
 
 using namespace std;
 
+int printpath(int i)
+{
+  if(i==1){
+           cout<<1;
+           return 1;}
+  else{
+     cout<<i;
+     return printpath(p[i]);
+  }
+}
+
 int main(){
 	
-	REP(i,SZ) v[i]=0;//no vertex is visited 
-	
+	REP(i,SZ){ v[i]=0; p[i]=0; d[i]=0; }//no vertex is visited 
+    	
 	list<int> q;
 	v[1]=1;
 	q.push_back(1);
+	p[1]=1;
 	
 	while(q.size())
 	{
-		int a;
-		a = q.front();
+		int u;
+		u = q.front();
 		q.pop_front();
-		cout<<a<<endl;
-		REP(i,SZ){ if(!v[i] && g[a][i]) {v[i]=1; q.push_back(i);}}
+		cout<<u<<endl;
+		REP(i,SZ){ if(!v[i] && g[u][i]) {v[i]=1; p[i]=u; d[i]=d[u]+1; q.push_back(i);}}
 		 
 	}
-
+cout<<endl;
+REP(i,SZ) cout<<p[i]<<endl;
+cout<<endl;
+printpath(3);
+cout<<endl;
+cout<<d[7]<<endl;
+system("pause");
 }
 	
 	
