@@ -1,0 +1,59 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>D3 tutorial</title>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+</head>
+<body> 
+<!-- 	
+		
+SVG Paths represent the outline of a shape that can be stroked, filled, used as a clipping path, or any combination of all three.
+	   -->
+	 <script type="text/javascript">
+
+	 	//json example
+	 	var jsonCircles = [
+	   { 
+    	"x_axis": 30,
+    	"y_axis": 30,
+    	"radius": 20,
+    	"colors" : "green"
+   		}, {
+    	"x_axis": 70,
+    	"y_axis": 70,
+   		"radius": 20,
+   		"colors" : "purple"
+  		}, {
+   		"x_axis": 110,
+   		"y_axis": 100,
+   		"radius": 20,
+   		"colors" : "red"
+		}];
+
+	 	 	var svgContainer3 = d3.select("body").append("svg").attr("width",400).attr("height",400).style("border","1px solid red");
+	 	 	var circles3 = svgContainer3.selectAll("circle").data(jsonCircles).enter().append("circle");
+	 	
+	 	 		circleAttrs3 = circles3.attr("cx",function(d,i){ return d.x_axis;})
+	 							.attr("cy",function(d,i){return d.y_axis;})
+	 							.attr("r",function(d,i){return jsonCircles[i].radius;})
+	 							.style("fill",function(d,i){ return jsonCircles[i].colors;});
+
+
+	 	 var svgContainer4 = d3.select("body").append("svg").attr("width",400).attr("height",400).style("border","1px solid green");
+	 	
+	 	var lineData = [ { "x": 1,   "y": 5},  { "x": 20,  "y": 20},
+                  { "x": 40,  "y": 10}, { "x": 60,  "y": 40},
+                  { "x": 80,  "y": 5},  { "x": 100, "y": 60}];
+
+        var linefun = d3.svg.line().x(function(d){return d.x;}).y(function(d){return d.y;}).interpolate("monotone");
+
+        var linegraph = svgContainer4.append("path").attr("d",linefun(lineData)).attr("stroke","blue").attr("stroke-width",2).attr("fill","green");
+
+	 	
+
+
+</script>
+	
+</body>
+</html> 
+

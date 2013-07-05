@@ -1,0 +1,734 @@
+<html>
+<head>
+	<meta charset="utf-8">
+    <title>Reveal.js 3 Slide Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="reveal.js-master/css/reveal.min.css">
+	   <link rel="stylesheet" href="reveal.js-master/js/highlight.js/styles/monokai.css">
+ 
+    <link rel="stylesheet" href="reveal.js-master/css/theme/serif.css" id="theme">
+ 
+    <script src="reveal.js-master/js/highlight.js/highlight.pack.js"></script>
+	<script>
+			document.write( '<link rel="stylesheet" href="reveal.js-master/css/print/pdf.css" type="text/css" media="print">' );
+	</script>
+    <!--Add support for earlier versions of Internet Explorer -->
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+<body>
+   <!-- Wrap the entire slide show in a div using the "reveal" class. -->
+    <div class="reveal">
+        <!-- Wrap all slides in a single "slides" class -->
+        <div class="slides">
+ 
+            <!-- ALL SLIDES GO HERE -->
+            <!-- Each section element contains an individual slide -->
+            <section>
+                <h1>JAVA In Depth</h1>
+                <p>Shah Jay Chandrakant</p>        
+            </section>
+			
+			<section>
+				<h3> About Me</h3>
+				<ul>
+				<p>Jay Shah</p>
+				<p>Twitter : @JAY_SHAH</p>
+				</ul>
+			</section>
+
+
+            <section>
+                <h2>Java Naming Conventions</h2>
+                <ul>
+                <p class="fragment roll-in"> Capitals for Classnames and Interfaces,<br/> </p>
+                 <p class="fragment roll-in">   camelCase for variables and methods<br /> </p>
+                    <p class="fragment roll-in"> ALL_CAPS for Constants </p>
+                 </ul>   
+                    <br/><br/>
+                    <h2>Legal Variables</h2>
+                <ul>
+                   <p class="fragment roll-in"> Cannot Start with a number!! - 3abc = 100 (Wrong)</p> 
+                   <p class="fragment roll-in">Cannot be a keyword - return (Wrong)</p>
+                   <p class="fragment roll-in">Are case sensitive - foo and FOO are different</p>
+               </ul>
+                </p>
+            </section>
+
+			<section>
+				<p class="fragment grow">grow</p>
+				<p class="fragment shrink">shrink</p>
+				<p class="fragment roll-in">roll-in</p>
+				<p class="fragment fade-out">fade-out</p>
+				<p class="fragment highlight-red">highlight-red</p>
+				<p class="fragment highlight-green">highlight-green</p>
+				<p class="fragment highlight-blue">highlight-blue</p>
+			</section>
+            
+            <section>
+            <h2> Your First program </h2>
+            <pre><code contenteditable spellcheck="false" class="java">
+                public class HelloWorld {
+                    public static void main(String[] args) {
+        
+                    }
+                }
+            </code>
+            </pre>
+            <blockquote>Design is not just what it looks like and feels like. Design is how it works.</blockquote>
+			<p><small>~ Steve Jobs</small></p>
+            </section>
+
+            
+			<section>
+			<h2>Interfaces in one word</h2>
+			<h1 class="fragment roll-in">Contracts!</h1>
+			
+			</section>
+			
+			
+			
+			<section>
+			<h2>Interfaces</h2>
+			    <blockquote class="fragment roll-in"> an interface is a reference type, similar to a class, that can contain only constants, method signatures, and nested types. <br/>There are <b><p class="fragment highlight-red"> no method bodies</p></b>.</blockquote>
+				            <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+public interface DoIt {
+	void doSomething(int i, double x);
+	int doSomethingElse(String s);
+}
+            </code></pre>
+				
+			</section>
+			
+			
+			<section>
+				<blockquote class="fragment roll-in"> Interfaces cannot be instantiated—they <p class="fragment highlight-red">can only be implemented by classes</p> or extended by other interfaces.</blockquote>
+				         <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+public class DoItImpl implements DoIt {
+	void doSomething(int i, double x){
+		System.out.println("printing i = "+i+" and x = "+x);
+	}
+	int doSomethingElse(String s){
+		System.out.println("String s is "+s);
+	}
+}
+</code></pre>
+	
+			</section>
+			
+			<section>
+			<h2>Interface = API</h2>
+			<p class="fragment roll-in"> APIs are also common in commercial software products.</p> 
+			<p class="fragment roll-in">e.g. Img processing company Implements an interface.
+			Graphical application company uses that interface.</p>
+			<p class="fragment roll-in">its implementation of the API is kept as a closely guarded secret—in fact, 
+			it may revise the implementation at a later date as long as it continues to 
+			implement the original interface that its customers have relied on.</p>
+
+</p>
+			</section>
+			
+            <section data-markdown>
+            	<script type="text/template">
+            		## Page title
+            	
+            		A paragraph with some text and [link](http://hakim.se)
+            	</script>
+            </section>
+
+            <section id="show-a-link">
+                <h1>You should try some javascript</h1>
+                <p>This is reveal.js</p>
+                <p>See <a href="http://www.htmlcheats.com">HTMLCheats.com</a><p>
+            </section>
+            
+            <section>
+				<h3>Summary of interfaces</h3>
+				<ol>
+				<li>An interface defines a protocol of communication between two objects.</li>
+				<li>An interface declaration contains signatures, but no implementations, for a set of methods, and might also contain constant definitions.</li>
+				<li>A class that implements an interface must implement all the methods declared in the interface.</li>
+				<li>An interface name can be used anywhere a type can be used.</li>
+				</ol>
+            </section>
+            
+            
+            <section>
+				<h3>Questions and Exercises</h3>
+				<ol>
+				<li>What methods would a class that implements the java.lang.CharSequence interface have to implement?</li>
+			
+            </section>
+            
+            <section>
+            	<li>What is wrong with the following interface?</li>
+			      <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+public interface SomethingIsWrong {
+    void aMethod(int aValue){
+        System.out.println("Hi Mom");
+    }
+}
+
+            </code></pre>
+			<p class="fragment roll-in">How will you fix this interface?</p>
+			</section>
+            
+            <section>
+            <li>Is the following interface valid?</li>
+                  <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+public interface Marker {
+}
+            </code></pre>
+			</ol>
+            </section>
+            
+            
+            <section class="alternatelight opacitytransition" data-state="styletile">
+					<h2> Using Style Tile</h2>
+					<p> <a href="http://styletil.es/">Styletil.es</a> </p>
+					
+				</section>
+            
+ 
+            <section data-transition="zoom">
+    		<h2>This slide will override the presentation transition and zoom!</h2>
+			</section>
+
+			<section>
+			<h4>Primitive data types</h4>
+			<table cellspacing='0'> <!-- cellspacing='0' is important, must stay -->
+
+	<!-- Table Header -->
+	<thead>
+		<tr>
+			<th>Data Type</th>
+			<th>Default value</th>
+		</tr>
+	</thead>
+	<!-- Table Header -->
+
+	<!-- Table Body -->
+	<tbody>
+
+		<tr>
+			<td>byte</td>
+			<td>0</td>
+		</tr><!-- Table Row -->
+
+		<tr>
+			<td>short</td>
+			<td>0</td>
+		</tr><!-- Darker Table Row -->
+
+		<tr>
+			<td>int</td>
+			<td>0</td>
+		</tr>
+
+		<tr>
+			<td>long</td>
+			<td>0L</td>
+		</tr>
+
+		<tr>
+			<td>float</td>
+			<td>0.0f</td>
+		</tr>
+
+		<tr>
+			<td>double</td>
+			<td>0.0d</td>
+		</tr>
+
+		<tr>
+			<td>char</td>
+			<td>'\u0000'</td>
+		</tr>
+
+	
+		<tr>
+			<td>String</td>
+			<td>null</td>
+		</tr>
+		
+		
+		<tr>
+			<td>boolean</td>
+			<td>false</td>
+		</tr>
+
+	</tbody>
+	<!-- Table Body -->
+
+</table>
+				
+			</section>
+
+			<section>
+			Arrays definition
+			img
+			</section>
+			
+			<section>
+			3 parts to using an array
+			1. decl
+			2. new
+			3. initialize individual elems
+			//code
+			//ask to write some code
+			</section>
+			
+			<section>
+			operators 1 page summary
+			operators Ques
+			</section>
+			
+			<section>
+			Expressions statements and blocks 1 pg each with e.g
+			
+			</section>
+
+			<section>
+			control flow 
+			1. if else
+			2. if else if
+			3. while
+			4. do-while
+			5. for
+			6. switch
+			7. break,continue,return
+			</section>
+			
+			<section>
+			<h3>Source File Declaration Rules</h3>
+			<ul>
+			<li class="fragment roll-in">There can be only one public class per source code file</li>
+			<li class="fragment roll-in">If there is a public class in file, name of file must match it</li>
+			<li class="fragment roll-in">A file can have more than one non-public class</li>
+			</ul>
+			</section>
+			
+			<section>
+			<h3>Understanding packages</h3>
+			<h5 class="fragment roll-in">Think of packages like a folders</h5>
+			   <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    package cert;
+    public class MyClass { ... }
+            </code></pre>
+            
+            <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    package cert;
+    public class AnotherClass { ... }
+            </code></pre>
+            
+            <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    package cert;
+    public class YetAnotherClass { ... }
+            </code></pre>
+            
+            <p class="fragment roll-in">If you see the directory structure, you will find Myclass.java, AnotherClass.java and YetAnotherClass.java in cert folder</p>
+            
+			</section>
+			
+			<section>
+			<h2>So what is a class Access? <br /></h2>
+			<h4>When I say a Class A has an access to Class B?</h4>
+			<p class="fragment roll-in">It means class A can do one of three things:</p>
+			<ol>
+			<li class="fragment roll-in"> create an instance of class B</li>
+			<li class="fragment roll-in"> extend class B</li>
+			<li class="fragment roll-in"> Access certain methods and variables within class B</li>
+			</ol>
+			</section>
+			
+			<section>
+			<h3>Four levels of access</h3>
+			<ol>
+			<li class="fragment roll-in"> Default Access</li>
+			<li class="fragment roll-in"> Public </li>
+			<li class="fragment roll-in"> Protected</li>
+			<li class="fragment roll-in"> Private</li>
+			</ol>
+			</section>
+			
+			<section>
+			<h3>Default Access</h3>
+			<h5>A class with default access has <em class="fragment highlight-blue">no modifier preceding it</em> in the declaration</h5>
+			   <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    package cert;
+    class MyClass { ... }
+            </code></pre>
+            <p class="fragment fad-in">Same as package level access</p>
+            <p class="fragment fad-in">Meaning All the classes in the same package are directly usable
+				<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    package cert;
+    class OtherClass { 
+        MyClass m = new MyClass();
+    }
+            </code></pre>
+            
+            <br/> Classes outside the package are non-existent</p>
+			</section>
+			
+				<section>
+			<h3>Public Access</h3>
+			<h5>A class with public keyword gives access to all classes in all packages to it </h5>
+			   <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    package cert;
+    public class Beverages { ... }
+            </code></pre>
+            <p class="fragment fad-in">You can use this class in any other packages also.</p>
+            <p class="fragment fad-in">But do not forget the import!!</p>
+               <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    package abc;
+    import cert.Beverages;
+    
+    public class Summer { 	
+        Beverages b = new Beverages();
+    }
+            </code></pre>
+            
+			</section>
+			
+			<section>
+			<h3>Protected and private Access</h3>
+			<h5>These kind of classes are usually used inside other classes. Will get back to it soon</h5>
+			   <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    package cert;
+   
+            </code></pre>
+            
+			</section>
+			
+			<section>
+			<h2>Java access Matrix</h2>
+			<table cellspacing='0'> <!-- cellspacing='0' is important, must stay -->
+
+	<!-- Table Header -->
+	<thead>
+		<tr>
+			<th>Visibility</th>
+			<th>Public</th>
+			<th>Protected</th>
+			<th>Default</th>
+			<th>Private</th>
+		</tr>
+	</thead>
+	<!-- Table Header -->
+
+	<!-- Table Body -->
+	<tbody>
+
+		<tr class="fragment roll-in">
+			<td>From the same class</td>
+			<td>Yes</td>
+			<td>Yes</td>
+			<td>Yes</td>
+			<td>Yes</td>
+		</tr><!-- Table Row -->
+
+		<tr class="fragment roll-in">
+			<td>From any class in the same package</td>
+			<td>Yes</td>
+			<td>Yes</td>
+			<td>Yes</td>
+			<td>No</td>
+		</tr><!-- Darker Table Row -->
+
+		<tr class="fragment roll-in">
+			<td>From a subclass in same package</td>
+			<td>Yes</td>
+			<td>Yes</td>
+			<td>Yes</td>
+			<td>No</td>
+		</tr>
+
+		<tr class="fragment roll-in">
+			<td>From a subclass outside the same package</td>
+			<td>Yes</td>
+			<td>Yes, thru inheritance</td>
+			<td>No</td>
+			<td>No</td>
+		</tr>
+
+		<tr class="fragment roll-in">
+			<td>From any non-subclass class outside the package</td>
+			<td>Yes</td>
+			<td>No</td>
+			<td>No</td>
+			<td>No</td>
+		
+		</tr>
+
+	</tbody>
+	<!-- Table Body -->
+
+</table>
+			
+			</section>
+			
+			
+			<section>
+			<h3>Final Modifier</h3>
+			<p>final keyword means this class cannot be subclassed</p>
+			   <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    package cert;
+    public final class Fruit{
+        public void importantMethod(){ 
+             System.out.println("Printing important stuff");
+        }
+    }   
+</code></pre>
+            <p> Trying the following will fail - <em class="fragment highlight-red">Compiler error</em></p> 
+               <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    package cert;
+    public class Orange extends Fruit{ //NO!!!
+
+    }   
+</code></pre>        
+			<p>Primary motivation to use a final class is : security and efficiency</p>
+			</section>
+			
+	
+			<section>
+			<h3>Abstract classes</h3>
+			<p class="fragment roll-in">can never be instantiated, it can only be subclassed.</p>
+			<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    package cert;
+    abstract class Car{
+        private double price;
+        private String model;
+        public abstract void goFast();//notice the semicolons
+        public abstract void stop();//notice the semicolons
+    }   
+</code></pre>  
+	<p class="fragment roll-in">The concrete implementations are provided by concrete subclasses</p>
+<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    package cert;
+    public class FiatCar extends Car{
+        private double price=50000;
+        private String model="Fiat";
+        public void goFast(){
+            System.out.println("speeding up");
+        }
+		public void stop(){
+            System.out.println("Car stopped");
+        } 
+    }   
+</code></pre>  
+			</section>
+			
+			<section>
+			<h3>Interesting facts on interfaces</h3>
+			<ul>
+			<li class="fragment roll-in">All interfaces are abstract whether typed or not.</li>
+			<li class="fragment roll-in">All interface methods are public and abstract whether typed or not.</li>
+			<li class="fragment roll-in">All interface constants are public,static and final whether typed or not</li>
+			</ul>
+			</section>
+			
+			<section>
+			Q and A
+			1. can a class be both final and abstract - <p class="fragment fade-in">NO they defeat each others purposes</p>
+			
+			</section>
+			
+			<section>
+			<h3>Polymorphism and Reference variables</h3>
+			<p>Polymorphic- Java objects that pass more than one IS-A test can be considere polymorphic.<br/>
+			All java objects pass this test for class java.lang.object and their own type and hence are polymorphic</p>
+			<ul>
+			<li class="fragment roll-in">A reference variable can be of only one type, and once declared that type can never change</li>
+			<li class="fragment roll-in">A reference is a variable so it can be re assigned to other objects</li>
+			<li class="fragment roll-in">Invokable methods depend on reference variable type</li>
+			<li class="fragment roll-in">Ref variable can refer to object of same type or <em class="fragment highlight-red">any subtype of declared type</em></li>
+			<li class="fragment roll-in">Reference var. can be declared as class type or interface, If interface type , it can refer to object of class that implements that interface</li>
+			</ul>
+	        </section>
+			
+			<section>
+			<h3 class="fragment fade-in">Java supports only single inheritance!!!</h3>
+<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    class PlayerPeice extends GameShape,AnimateShape{ //NO!!!,NO!!!
+        //...
+    }   
+    
+</code></pre>
+		<p class="fragment roll-in">A class cannot extend more than one class,</p><p class="fragment roll-in">that means only one parent per class</p>	
+<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    class B extends A{ /*OK*/ 
+        //...
+    }   
+    class C extends B{ /*OK*/
+        //...
+    }
+    
+</code></pre>
+			</section>
+	
+	<section>
+	Gameshape class and PlayerPeice class:
+	<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    class GameShape{
+        public void displayShape(){
+			System.out.println("display shape");
+        }
+    }   
+    
+    public interface Animatable{
+        public void animate();
+    }
+    
+    class PlayerPeice extends GameShape implements Animatable{
+        public void movePeice(){
+            System.out.println("moving peice");
+        }
+        public void animate(){
+            System.out.println("animating peice");
+        }
+    }
+    
+</code></pre>
+	</section>
+	
+	<section>
+	treated polymorphically as one of four depending upon the type of reference variable:
+	<ul>
+	<li class="fragment roll-in">An object(since any object inherits from java.Lang.Object)</li>
+	<li class="fragment roll-in">A GameShape(since PlayerPeice extends GameShape)</li>
+	<li class="fragment roll-in">A PlayerPeice(since that is what it really is)</li>
+	<li class="fragment roll-in">An Animatable(since PlayerPeice implements Animatable)</li>
+	</ul>
+	<br />
+	Look at the following legal declarations:
+	<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    PlayerPeice player = new PlayerPeice();
+    Object o = player;
+    GameShape shape = player;
+    Animatable mover = player;
+    
+</code></pre>
+Q - Which two vars can invoke displayShape()?
+	</section>
+			
+			<section>
+			<h3>Overriding vs Overloading</h3>
+			Overriding : Re-implementing parent class function , exact same function signature(Arg list)
+			<br/>
+			<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    class A{  
+        public void abc(int a){ ... }
+    }   
+    class B extends A{ 
+        public void abc(int a){ //Here goes the overriden code }
+    }
+    
+</code></pre>
+			<br/>
+			Overloading : Re use the function name, Must have a different function signature(Arg list)
+			<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    class A{  
+        public void abc(int a){ ... }
+        public void abc(int a,int b){ ... }
+    }   
+    
+</code></pre>
+			</section>
+			
+			<section>
+			<h3>Most important tip on overriding</h3>
+			<h2 class="fragment roll-in">Invokable methods depend on ref var, the real method being invoked is of real object's type</h2>
+			</section>
+			
+			<section>
+			<h4>Some exercises</h4>
+			<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    class Animal{  
+        public void eat(){ 
+            System.out.println("Animal eats");    
+        }
+    }   
+    
+</code></pre>
+<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    class Horse extends Animal{  
+        public void eat(){ 
+            System.out.println("Horse eats horse stuff");    
+        }
+    }   
+    
+</code></pre>
+<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    public class TestAnimals{
+		public static void main(String args[]){  
+            Animal a = new Animal();
+            Animal b = new Horse(); // Animal ref, Horse object
+            a.eat();
+            b.eat();
+        }
+    }   
+    
+</code></pre>
+
+			</section>
+			
+			<section>
+			<h3>Static</h3>
+			Use static variables to hold data that is class specific as opposed to instance specific<br/>
+			There will be only one copy of static variable
+			In Fact you can use static method or static variable of a class without having any instances 
+			of the Class.
+			</section>
+			
+			<section>
+			<h4>What would be the output of the following code when run?</h4>
+<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    public class Foo{
+		int x = 3;
+		public static void main(String args[]){  
+            System.out.println("x is "+x);
+        }
+    }   
+    
+</code></pre>
+<p class="fragment roll-in">The code will not compile!! primarily due to the fact that main is a static context and x is an instance variable</p>
+<h4 class="fragemnt roll-in">Effects of static on methods and variables</h4>
+<ol>
+<li class="fragment roll-in">static method cannot access an instance(non-static) variable</li>
+<li class="fragment roll-in">static method cannot access an instance(non-static) method</li>
+<li class="fragment roll-in">static method can access static methods and variables</li>
+</ol>
+			</section>
+			
+			<section>
+			Nested Classes, inner classes and Anonymous inner classes
+			</section>
+            
+            <section>
+                <p>Visit internal slide<a href="#/show-a-link"> 2</a>
+            </section>
+
+            <section>
+                <h1>Questions?</h1>
+				
+            </section>
+            </div>
+    </div>
+    <script src="reveal.js-master/lib/js/head.min.js"></script>
+    <script src="reveal.js-master/js/reveal.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+    <script>
+        // Required, even if empty.
+        Reveal.initialize({
+        
+       
+	
+
+    //    autoSlide: 5000
+
+        });
+    </script>
+
+</body>
+</html>

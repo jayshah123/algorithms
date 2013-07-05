@@ -1,0 +1,78 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>D3 tutorial</title>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+</head>
+<body> 
+<!-- 	
+	<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="200" height="200">
+  	 	<circle cx="25" cy="25" r="500" fill="purple" />
+	</svg>
+
+	<svg >
+   		<circle cx="100" cy="50" r="40" stroke="black" stroke-width="2" fill="red" />
+	</svg> 
+	   -->
+	 <script type="text/javascript">
+	 	// d3.select("p").text("Hello world");
+	 	// d3.select("body").append("p").text("Hi whats up");
+		//appending an svg circle
+	 	d3.select("body")
+	 	.append("svg")
+	 	.attr("width",50)
+	 	.attr("height",50)
+	 	.append("circle")
+	 	.attr("cx",25)
+	 	.attr("cy",25)
+	 	.attr("r",25)
+	 	.style("fill","orange");
+
+	 	//data binding and showing
+	 	var tdata = [1,3,4]
+
+	 	var p = d3.select("body").selectAll("p")
+	 			.data(tdata).enter()
+	 			.append("p")
+	 			.text(function (d,i) {
+	 				return "index = "+i+" data = "+d;
+	 			});
+
+	 	//creating svgs based on data
+	 	var cRadii = [40,20,10]
+
+	 	var svgContainer = d3.select("body")
+	 						.append("svg")
+	 						.attr("width",600)
+	 						.attr("height",100)
+	 						.style("border","1px solid blue");
+
+	 	var circles = svgContainer.selectAll("circle")
+	 							  .data(cRadii).enter()
+	 							  .append("circle");
+
+	 	var circleAttrs = circles
+	 						.attr("cx",50)
+	 						.attr("cy",50)
+	 						.attr("r", function(d) { return d;})
+	 						.style("fill",function(d){
+	 							var returnColor;
+	 							if(d === 40){ returnColor = "green"}
+	 							if(d === 20){ returnColor = "purple"}
+	 							if (d === 10) {	returnColor = "red" }
+	 							return returnColor;
+	 						});
+
+	 	var spaceCircles = [20,60,150]
+	 	var svgContainer2 = d3.select("body").append("svg").attr("width",400).attr("height",400).style("border","1px solid black");
+	 	//d3 selections are arrays
+	 	var circles2 = svgContainer2.selectAll("circle").data(spaceCircles).enter().append("circle");
+	 	circleAttrs2 = circles2.attr("cx",function(d){ return d;})
+	 							.attr("cy",function(d){return d;})
+	 							.attr("r",20).style("fill","green");
+
+	 	 	var svgContainer3 = d3.select("body").append("svg").attr("width",400).attr("height",400).style("border","1px solid red");
+	 	 var svgContainer4 = d3.select("body").append("svg").attr("width",400).attr("height",400).style("border","1px solid green");
+	 </script>
+	
+</body>
+</html> 

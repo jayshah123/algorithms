@@ -1,0 +1,60 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>D3 tutorial</title>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+</head>
+<body> 
+<!-- 	
+	<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="200" height="200">
+  	 	<circle cx="25" cy="25" r="500" fill="purple" />
+	</svg>
+
+	<svg >
+   		<circle cx="100" cy="50" r="40" stroke="black" stroke-width="2" fill="red" />
+	</svg> 
+	   -->
+	 <script type="text/javascript">
+
+	 	var spaceCircles = [20,60,150]
+	 	var svgContainer2 = d3.select("body").append("svg").attr("width",400).attr("height",400).style("border","1px solid black");
+	 	//d3 selections are arrays
+	 	var circles2 = svgContainer2.selectAll("circle").data(spaceCircles).enter().append("circle");
+	 	circleAttrs2 = circles2.attr("cx",function(d){ return d;})
+	 							.attr("cy",function(d){return d;})
+	 							.attr("r",20).style("fill","green");
+	 	//json example
+	 	var jsonCircles = [
+	   { 
+    	"x_axis": 30,
+    	"y_axis": 30,
+    	"radius": 20,
+    	"colors" : "green"
+   		}, {
+    	"x_axis": 70,
+    	"y_axis": 70,
+   		"radius": 20,
+   		"colors" : "purple"
+  		}, {
+   		"x_axis": 110,
+   		"y_axis": 100,
+   		"radius": 20,
+   		"colors" : "red"
+		}];
+
+	 	 	var svgContainer3 = d3.select("body").append("svg").attr("width",400).attr("height",400).style("border","1px solid red");
+	 	 	var circles3 = svgContainer3.selectAll("circle").data(jsonCircles).enter().append("circle");
+	 	
+	 	 		circleAttrs3 = circles3.attr("cx",function(d,i){ return d.x_axis;})
+	 							.attr("cy",function(d,i){return d.y_axis;})
+	 							.attr("r",function(d,i){return jsonCircles[i].radius;})
+	 							.style("fill",function(d,i){ return jsonCircles[i].colors;});
+
+	 	 var svgContainer4 = d3.select("body").append("svg").attr("width",400).attr("height",400).style("border","1px solid green");
+
+	 	 var samplerect = svgContainer4.append("rect").attr("x",100).attr("y",100).attr("width",30).attr("height",70);
+	 	 var sampleellipse = svgContainer4.append("ellipse").attr("cx",200).attr("cy",200).attr("rx",30).attr("ry",15).style("fill","orange");
+	 	 var sampleline = svgContainer4.append("line").attr("x1",0).attr("y1",0).attr("x2",400).attr("y2",400).attr("stroke-width",2).attr("stroke","blue");
+	 </script>
+	
+</body>
+</html> 

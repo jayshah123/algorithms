@@ -1,0 +1,54 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>D3 tutorial</title>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+</head>
+<body> 
+<!-- 	
+		
+SVG Paths represent the outline of a shape that can be stroked, filled, used as a clipping path, or any combination of all three.
+	   -->
+	 <script type="text/javascript">
+
+	 	//json example
+	 	 var svgContainer4 = d3.select("body").append("svg").attr("width",400).attr("height",400).style("border","1px solid green");
+	 	
+	 	var lineData = [ { "x": 1,   "y": 5},  { "x": 20,  "y": 20},
+                  { "x": 40,  "y": 10}, { "x": 60,  "y": 40},
+                  { "x": 80,  "y": 5},  { "x": 100, "y": 60}];
+
+        var linefun = d3.svg.line().x(function(d){return d.x;}).y(function(d){return d.y;}).interpolate("monotone");
+
+        var linegraph = svgContainer4.append("path").attr("d",linefun(lineData)).attr("stroke","blue").attr("stroke-width",2).attr("fill","green");
+
+
+	 	var initialScaleData = [0, 1000, 3000, 2000, 5000, 4000, 7000, 6000, 9000, 8000, 10000];
+ 
+        var newScaledData = [];
+ 
+        var linearScale = d3.scale.linear()
+                    .domain([0,10000])
+                    .range([0,100]);
+ 
+         for (var i = 0; i < initialScaleData.length; i++) {
+            newScaledData[i] = linearScale(initialScaleData[i]);
+         }
+
+         document.write("<br />");
+         var mx = d3.max(newScaledData);
+         document.write("the max of newScaledData is "+mx+"<br />");
+
+        // The g element is a container used to group objects. Transformations applied to the g element are performed on all of its child elements. Attributes applied are inherited by child elements. In addition, it can be used to define complex objects that can later be referenced with the <use> element.
+
+        //         two major uses of the SVG Group Element:
+
+        // Grouping - To group a set of SVG elements that share the same attribute
+        // Transforming - To define a new coordinate system for a set of SVG elements by applying a transformation to each coordinate specified in this set of SVG elements
+
+        
+
+</script>
+	
+</body>
+</html> 
