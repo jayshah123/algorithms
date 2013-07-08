@@ -26,7 +26,7 @@
             <!-- ALL SLIDES GO HERE -->
             <!-- Each section element contains an individual slide -->
             <section>
-                <h1>JAVA In Depth</h1>
+                <h1>JAVA</h1>
                 <p>Shah Jay Chandrakant</p>        
             </section>
 			
@@ -55,39 +55,12 @@
                </ul>
                 </p>
             </section>
-
-			<section>
-				<p class="fragment grow">grow</p>
-				<p class="fragment shrink">shrink</p>
-				<p class="fragment roll-in">roll-in</p>
-				<p class="fragment fade-out">fade-out</p>
-				<p class="fragment highlight-red">highlight-red</p>
-				<p class="fragment highlight-green">highlight-green</p>
-				<p class="fragment highlight-blue">highlight-blue</p>
-			</section>
-            
-            <section>
-            <h2> Your First program </h2>
-            <pre><code contenteditable spellcheck="false" class="java">
-                public class HelloWorld {
-                    public static void main(String[] args) {
-        
-                    }
-                }
-            </code>
-            </pre>
-            <blockquote>Design is not just what it looks like and feels like. Design is how it works.</blockquote>
-			<p><small>~ Steve Jobs</small></p>
-            </section>
-
             
 			<section>
 			<h2>Interfaces in one word</h2>
 			<h1 class="fragment roll-in">Contracts!</h1>
 			
 			</section>
-			
-			
 			
 			<section>
 			<h2>Interfaces</h2>
@@ -289,17 +262,79 @@ public interface Marker {
 			
 			</section>
 
-			<section>
-			control flow 
-			1. if else
-			2. if else if
-			3. while
-			4. do-while
-			5. for
-			6. switch
-			7. break,continue,return
-			</section>
-			
+            <section> 
+                <h3>If else example</h3>
+                <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    if( a &lt b){
+        System.out.println("a less than b");
+    } else {
+        System.out.println("a is greater than or equal to b");
+    }
+
+</code></pre>
+             </section> 
+
+<section> 
+<h3>While example</h3>
+<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    int a = 0;
+    while( a &lt 10 ){
+        System.out.println("a");
+        a++;
+    }
+
+</code></pre>
+ </section>
+
+<section> 
+<h3>do while example</h3>
+<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    int a = 0;
+    do{
+        System.out.println("a");
+    }while( a &lt 10 )
+
+</code></pre>
+
+ </section>
+
+<section> 
+<h3>For example</h3>
+<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    int a = 10;
+    for( int i = 0 ; i &lt 10 ; i++ ){
+        System.out.println("a");
+    }
+
+</code></pre>
+ <h3>Alternative syntax for collections</h3>
+ <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    String[] arr = {"hello","how","when","where","what","who"};
+    for( String str : arr){
+        System.out.println(str);
+    }
+
+ </code></pre>
+ </section>
+
+<section> 
+<h3>Switch syntax</h3>
+<p>Switch works with primitive, enumerated and String(Java 7)</p>
+<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    int month = 1;
+    String monthString;
+    switch (month) {
+        case 1:  monthString = "January";
+             break;
+        case 12: monthString = "December";
+             break;
+        default: monthString = "Invalid month";
+             break;
+    }
+
+</code></pre>
+ </section>
+
 			<section>
 			<h3>Source File Declaration Rules</h3>
 			<ul>
@@ -705,6 +740,182 @@ Q - Which two vars can invoke displayShape()?
 			Nested Classes, inner classes and Anonymous inner classes
 			</section>
             
+<section> 
+<h3>Regular inner classes</h3>
+<h6>are classes which are </h6>
+<ul>
+<li class="fragment roll-in">not Static</li> 
+<li class="fragment roll-in">not Method local (i.e not declared inside a method)</li>
+<li class="fragment roll-in">not Anonymous(should have a name)</li>  
+</ul>
+<p class="fragment roll-in">TIP : inner classes are members of the outer class just like variables
+    and methods are members of the outer class</p>
+ </section>
+
+
+ <section> 
+<h4>Coding a Regular inner classes</h4>
+<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    class MyOuter {
+        class MyInner{
+
+        }
+    }
+</code></pre>
+<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    $javac MyOuter.java 
+</code></pre>
+<p class="fragment roll-in">Compiling it You will end up with MyOuter.class and MyOuter$MyInner.class</p>
+  </section>
+
+<section> 
+<h4> Q and A </h4>
+<h5> Is this peice of code legal ? </h5>
+<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    class MyOuter { 
+        private int x = 7;//private variable
+        class MyInner{
+            public void seeOuter(){
+                System.out.println("Outer x is "+x);
+            }
+        }//close inner class def
+    }//close outer class def
+</code></pre>
+<p class="fragment roll-in">Yes it is! Remember the tip earlier? This inner class is just like a member instance method or member variable</p>
+ </section>
+
+<section> 
+<h4>TIP: <i>The only way you can access the inner class is through a live instance of outer class</i></h4>
+<h5> Instantiating an inner class </h5>
+<ul>
+<li class="fragment roll-in">Instantiating an Inner class from within the outer class</li>
+<li class="fragment roll-in">Creating an Inner class object from Outside the Outer class</li>  
+</ul>
+ </section>
+
+<section> 
+<p>Instantiating an Inner class from within the outer class</p>
+<p class="fragment roll-in">Most often it is the outer class that instantiates the inner class using it as a helper</p>
+<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    class MyClass { 
+        private int x = 7;
+        public void makeInner(){
+            MyInner in = new MyInner(); // see this : outer class instatiates  inner
+            in.seeOuter();
+        }
+
+        class MyInner{
+            public void seeOuter(){
+                System.out.println("Outer x is "+x);
+            }
+        }
+    }
+</code></pre>
+ </section>
+
+ <section> 
+    Creating an Inner class object from Outside the Outer class
+<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    class SomeOtherClassInSamePackageAsMyOuter { 
+        public static void main(String args[]){
+            MyOuter mo = new MyOuter(); //gotta get an instance, remember the previous tip?
+            MyOuter.MyInner inner = mo.new MyInner();
+            inner.seeOuter();
+        }
+    }
+</code></pre>
+<p class="fragment roll-in">Or if you are into one liners</p>
+<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    class SomeOtherClassInSamePackageAsMyOuter { 
+        public static void main(String args[]){
+            MyOuter.MyInner inner = new MyOuter().new MyInner();
+            inner.seeOuter();
+        }
+    }
+</code></pre>
+  </section>
+
+<section> 
+<h3>Inner classes and the keyword 'this'</h3>
+<ul>
+<li class="fragment roll-in">In the inner class code you can refer to the inner class instance object as 'this'
+</li>
+<li class="fragment roll-in">In the inner class code you can refer to outer enclosing class as MyOuter.this</li>  
+</ul>
+ </section>
+
+
+
+  <section> 
+<h3> Method local inner classes </h3>
+<p class="fragment roll-in">these classes are declared inside methods, regular inner classes are declared outside any method</p>
+<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    class MyOuter { 
+        private String x="outer";
+
+        void doStuff(){
+            class MyInner{
+                public void seeOuter(){
+                    System.out.println("outer x is "+x);
+                }
+            }
+            MyInner in = new MyInner();
+            in.seeOuter();
+        }
+    }
+
+</code></pre>
+   </section>
+
+<section> 
+<h4>More on Method local inner class</h4>
+<ul>
+<li class="fragment roll-in">A method local inner class can be instantiated only within the method where the inner class is defined</li>
+<li class="fragment roll-in"> No other code running in any other method - inside or outside the class, can ever instantiate the method-local inner class</li>
+<li class="fragment roll-in"></li>   
+</ul>
+</section>
+
+
+<section> 
+<h3> Anonymous Inner classes </h3>
+<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    class MyClass { 
+        public void myMethod(){
+            System.out.println("myMethod");
+        }
+    }
+    class OtherClass{
+        MyClass m = new MyClass(){
+            public void myMethod(){
+                System.out.println("overriden myMethod");
+            }
+        };//note the semicolon
+        m.myMethod();
+    }
+</code></pre>
+ </section>
+
+ <section>
+<h3> Static nested classes </h3>
+<p>A static nested class is simply a class that is a static member of the enclosing class</p>
+<p class="fragment roll-in"> This means it can be accessed, as with other static members, without having an instance of the outer class</p>
+<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    class BigOuter {
+        static class Nest{
+            void go() { System.out.println("hi");}
+        }   
+    }
+    
+    class Other{
+        public static void main(String args[]){
+            BigOuter.Nest n = new BigOuter.Nest();
+            n.go();
+        }
+    }
+
+</code></pre>
+ </section>
             <section>
                 <p>Visit internal slide<a href="#/show-a-link"> 2</a>
             </section>
