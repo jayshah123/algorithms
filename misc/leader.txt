@@ -1,0 +1,4 @@
+//Find a leader in an array- a no. which repeats more than n/2 time
+
+//the trick is O(n)
+//maintain a stack and eliminate when two consecutive entries are different
