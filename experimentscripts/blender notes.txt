@@ -1,0 +1,18 @@
+blender notes
+
+object mode - affect global properties
+edit mode - affect only the object in selection
+
+right click object to select
+shift + MMB - pan
+MMB - rotate
+S - scale , s then enter no. will scale to particular amount
+mouse scroll - zoom in
+Z - toggle between solid/wireframe
+Tab - object mode/ edit mode
+Numpad 5 - ortho / perspective
+A - select all objects
+B - select all vertices in a given area
+left click - set originn for new object
+
+shift select(right click on each) all the edges you want to make a face with - then press F to make a face.

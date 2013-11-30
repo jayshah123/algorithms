@@ -27,17 +27,19 @@
             <!-- Each section element contains an individual slide -->
             <section>
                 <h1>JAVA</h1>
-                <p>Shah Jay Chandrakant</p>        
+				
             </section>
 			
 			<section>
-				<h3> About Me</h3>
-				<ul>
-				<p>Jay Shah</p>
-				<p>Twitter : @JAY_SHAH</p>
-				</ul>
+			<h2>In this talk...</h2>
+			<p class="fragment roll-in"> Naming conventions </p>
+			<p class="fragment roll-in"> Control flow </p>
+			<p class="fragment roll-in"> Access Modifiers </p>
+			<p class="fragment roll-in"> Interfaces </p>
+			<p class="fragment roll-in"> Inheritance </p>
+			<p class="fragment roll-in"> Overriding and Overloading</p>
+			<p class="fragment roll-in"> Inner Classes and Enums </p>
 			</section>
-
 
             <section>
                 <h2>Java Naming Conventions</h2>
@@ -56,118 +58,7 @@
                 </p>
             </section>
             
-			<section>
-			<h2>Interfaces in one word</h2>
-			<h1 class="fragment roll-in">Contracts!</h1>
 			
-			</section>
-			
-			<section>
-			<h2>Interfaces</h2>
-			    <blockquote class="fragment roll-in"> an interface is a reference type, similar to a class, that can contain only constants, method signatures, and nested types. <br/>There are <b><p class="fragment highlight-red"> no method bodies</p></b>.</blockquote>
-				            <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
-public interface DoIt {
-	void doSomething(int i, double x);
-	int doSomethingElse(String s);
-}
-            </code></pre>
-				
-			</section>
-			
-			
-			<section>
-				<blockquote class="fragment roll-in"> Interfaces cannot be instantiated—they <p class="fragment highlight-red">can only be implemented by classes</p> or extended by other interfaces.</blockquote>
-				         <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
-public class DoItImpl implements DoIt {
-	void doSomething(int i, double x){
-		System.out.println("printing i = "+i+" and x = "+x);
-	}
-	int doSomethingElse(String s){
-		System.out.println("String s is "+s);
-	}
-}
-</code></pre>
-	
-			</section>
-			
-			<section>
-			<h2>Interface = API</h2>
-			<p class="fragment roll-in"> APIs are also common in commercial software products.</p> 
-			<p class="fragment roll-in">e.g. Img processing company Implements an interface.
-			Graphical application company uses that interface.</p>
-			<p class="fragment roll-in">its implementation of the API is kept as a closely guarded secret—in fact, 
-			it may revise the implementation at a later date as long as it continues to 
-			implement the original interface that its customers have relied on.</p>
-
-</p>
-			</section>
-			
-            <section data-markdown>
-            	<script type="text/template">
-            		## Page title
-            	
-            		A paragraph with some text and [link](http://hakim.se)
-            	</script>
-            </section>
-
-            <section id="show-a-link">
-                <h1>You should try some javascript</h1>
-                <p>This is reveal.js</p>
-                <p>See <a href="http://www.htmlcheats.com">HTMLCheats.com</a><p>
-            </section>
-            
-            <section>
-				<h3>Summary of interfaces</h3>
-				<ol>
-				<li>An interface defines a protocol of communication between two objects.</li>
-				<li>An interface declaration contains signatures, but no implementations, for a set of methods, and might also contain constant definitions.</li>
-				<li>A class that implements an interface must implement all the methods declared in the interface.</li>
-				<li>An interface name can be used anywhere a type can be used.</li>
-				</ol>
-            </section>
-            
-            
-            <section>
-				<h3>Questions and Exercises</h3>
-				<ol>
-				<li>What methods would a class that implements the java.lang.CharSequence interface have to implement?</li>
-			
-            </section>
-            
-            <section>
-            	<li>What is wrong with the following interface?</li>
-			      <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
-public interface SomethingIsWrong {
-    void aMethod(int aValue){
-        System.out.println("Hi Mom");
-    }
-}
-
-            </code></pre>
-			<p class="fragment roll-in">How will you fix this interface?</p>
-			</section>
-            
-            <section>
-            <li>Is the following interface valid?</li>
-                  <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
-public interface Marker {
-}
-            </code></pre>
-			</ol>
-            </section>
-            
-            
-            <section class="alternatelight opacitytransition" data-state="styletile">
-					<h2> Using Style Tile</h2>
-					<p> <a href="http://styletil.es/">Styletil.es</a> </p>
-					
-				</section>
-            
- 
-            <section data-transition="zoom">
-    		<h2>This slide will override the presentation transition and zoom!</h2>
-			</section>
-
 			<section>
 			<h4>Primitive data types</h4>
 			<table cellspacing='0'> <!-- cellspacing='0' is important, must stay -->
@@ -239,29 +130,13 @@ public interface Marker {
 			</section>
 
 			<section>
-			Arrays definition
-			img
-			</section>
-			
-			<section>
 			3 parts to using an array
 			1. decl
 			2. new
 			3. initialize individual elems
 			//code
-			//ask to write some code
 			</section>
 			
-			<section>
-			operators 1 page summary
-			operators Ques
-			</section>
-			
-			<section>
-			Expressions statements and blocks 1 pg each with e.g
-			
-			</section>
-
             <section> 
                 <h3>If else example</h3>
                 <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
@@ -503,6 +378,93 @@ public interface Marker {
 			
 			</section>
 			
+			<section>
+			<h2>Interfaces in one word</h2>
+			<h1 class="fragment roll-in">Contracts!</h1>
+			
+			</section>
+			
+			<section>
+			<h2>Interfaces</h2>
+			    <blockquote class="fragment roll-in"> an interface is a reference type, similar to a class, that can contain only constants, method signatures, and nested types. <br/>There are <b><p class="fragment highlight-red"> no method bodies</p></b>.</blockquote>
+				            <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+public interface DoIt {
+	void doSomething(int i, double x);
+	int doSomethingElse(String s);
+}
+            </code></pre>
+				
+			</section>
+			
+			
+			<section>
+				<blockquote class="fragment roll-in"> Interfaces cannot be instantiated—they <p class="fragment highlight-red">can only be implemented by classes</p> or extended by other interfaces.</blockquote>
+				         <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+public class DoItImpl implements DoIt {
+	void doSomething(int i, double x){
+		System.out.println("printing i = "+i+" and x = "+x);
+	}
+	int doSomethingElse(String s){
+		System.out.println("String s is "+s);
+	}
+}
+</code></pre>
+	
+			</section>
+			
+			<section>
+			<h2>Interface = API</h2>
+			<p class="fragment roll-in"> APIs are also common in commercial software products.</p> 
+			<p class="fragment roll-in">e.g. Img processing company Implements an interface.
+			Graphical application company uses that interface.</p>
+			<p class="fragment roll-in">its implementation of the API is kept as a closely guarded secret—in fact, 
+			it may revise the implementation at a later date as long as it continues to 
+			implement the original interface that its customers have relied on.</p>
+
+</p>
+			</section>
+			
+            
+            <section>
+				<h3>Summary of interfaces</h3>
+				<ol>
+				<li>An interface defines a protocol of communication between two objects.</li>
+				<li>An interface declaration contains signatures, but no implementations, for a set of methods, and might also contain constant definitions.</li>
+				<li>A class that implements an interface must implement all the methods declared in the interface.</li>
+				<li>An interface name can be used anywhere a type can be used.</li>
+				</ol>
+            </section>
+            
+            
+            <section>
+				<h3>Questions and Exercises</h3>
+				<ol>
+				<li>What methods would a class that implements the java.lang.CharSequence interface have to implement?</li>
+			
+            </section>
+            
+            <section>
+            	<li>What is wrong with the following interface?</li>
+			      <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+public interface SomethingIsWrong {
+    void aMethod(int aValue){
+        System.out.println("Hi Mom");
+    }
+}
+
+            </code></pre>
+			<p class="fragment roll-in">How will you fix this interface?</p>
+			</section>
+            
+            <section>
+            <li>Is the following interface valid?</li>
+                  <pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+public interface Marker {
+}
+            </code></pre>
+			</ol>
+            </section>
+            
 			
 			<section>
 			<h3>Final Modifier</h3>
@@ -915,17 +877,43 @@ Q - Which two vars can invoke displayShape()?
     }
 
 </code></pre>
- </section>
-            <section>
-                <p>Visit internal slide<a href="#/show-a-link"> 2</a>
-            </section>
+</section>
+
+<section>
+<h4>Enum Types</h4>
+An enum type is a special data type that enables for a variable to be a set of predefined constants.
+<p>you need to represent a <em class="fragment highlight-red">fixed set of constants</em></p>
+<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    public enum Day {
+        SUNDAY, MONDAY, TUESDAY, WEDNESDAY,
+        THURSDAY, FRIDAY, SATURDAY 
+    }
+	
+</code></pre>
+<p class="fragment roll-in">Iterating through an enum</p>
+<pre class="fragment fade-in"><code contenteditable spellcheck="false" class="java">
+    for (Day d : Day.values()) {
+        // do what you want
+    }
+	
+</code></pre>
+
+</section>
+
+            
 
             <section>
-                <h1>Questions?</h1>
+                <h2>Thank You</h2>
+				<h1>Questions?</h1>
 				
             </section>
             </div>
     </div>
+	<footer style="display:none;">
+        <div style="float:left;">
+		<img src="images/samsung-logo.jpg" />
+		Samsung Electronics  {{ CURRENT_SLIDE }} of {{ NUM_SLIDES }}</div>
+      </footer>
     <script src="reveal.js-master/lib/js/head.min.js"></script>
     <script src="reveal.js-master/js/reveal.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
@@ -933,7 +921,16 @@ Q - Which two vars can invoke displayShape()?
         // Required, even if empty.
         Reveal.initialize({
         
-       
+       dependencies: [
+        
+          {
+            src: 'footer.reveal.js',
+            condition: function() { return !!document.querySelector( 'footer' ); } 
+          }
+        
+        ]
+		
+	   
 	
 
     //    autoSlide: 5000
