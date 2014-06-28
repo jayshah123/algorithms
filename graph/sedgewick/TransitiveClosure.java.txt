@@ -1,0 +1,109 @@
+
+<!-- saved from url=(0063)http://algs4.cs.princeton.edu/42directed/TransitiveClosure.java -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><div id="StayFocusd-infobar" style="display:none;">
+    <img src="chrome-extension://laankejkbhbdhmipfmgcngdelahlfoji/common/img/eye_19x19_red.png">
+    <span id="StayFocusd-infobar-msg"></span>
+    <span id="StayFocusd-infobar-links">
+        <a id="StayFocusd-infobar-never-show">hide forever</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a id="StayFocusd-infobar-hide">hide once</a>
+    </span>
+</div><pre style="word-wrap: break-word; white-space: pre-wrap;">/*************************************************************************
+ *  Compilation:  javac TransitiveClosure.java
+ *  Execution:    java TransitiveClosure filename.txt
+ *  Dependencies: Digraph.java DepthFirstDirectedPaths.java In.java StdOut.java
+ *  Data files:   http://algs4.cs.princeton.edu/42directed/tinyDG.txt
+ *
+ *  Compute transitive closure of a digraph and support
+ *  reachability queries.
+ *
+ *  Preprocessing time: O(V(E + V)) time.
+ *  Query time: O(1).
+ *  Space: O(V^2).
+ *
+ *  % java TransitiveClosure tinyDG.txt
+ *         0  1  2  3  4  5  6  7  8  9 10 11 12
+ *  --------------------------------------------
+ *    0:   T  T  T  T  T  T                     
+ *    1:      T                                 
+ *    2:   T  T  T  T  T  T                     
+ *    3:   T  T  T  T  T  T                     
+ *    4:   T  T  T  T  T  T                     
+ *    5:   T  T  T  T  T  T                     
+ *    6:   T  T  T  T  T  T  T        T  T  T  T
+ *    7:   T  T  T  T  T  T  T  T  T  T  T  T  T
+ *    8:   T  T  T  T  T  T  T  T  T  T  T  T  T
+ *    9:   T  T  T  T  T  T           T  T  T  T
+ *   10:   T  T  T  T  T  T           T  T  T  T
+ *   11:   T  T  T  T  T  T           T  T  T  T
+ *   12:   T  T  T  T  T  T           T  T  T  T
+ *
+ *************************************************************************/
+
+/**
+ *  The &lt;tt&gt;TransitiveClosure&lt;/tt&gt; class represents a data type for 
+ *  computing the transitive closure of a digraph.
+ *  &lt;p&gt;
+ *  This implementation runs depth-first search from each vertex.
+ *  The constructor takes time proportional to &lt;em&gt;V&lt;/em&gt;(&lt;em&gt;V&lt;/em&gt; + &lt;em&gt;E&lt;/em&gt;)
+ *  (in the worst case) and uses space proportional to &lt;em&gt;V&lt;/em&gt;&lt;sup&gt;2&lt;/sup&gt;,
+ *  where &lt;em&gt;V&lt;/em&gt; is the number of vertices and &lt;em&gt;E&lt;/em&gt; is the number of edges.
+ *  &lt;p&gt;
+ *  For additional documentation, see &lt;a href="/algs4/42digraph"&gt;Section 4.2&lt;/a&gt; of
+ *  &lt;i&gt;Algorithms, 4th Edition&lt;/i&gt; by Robert Sedgewick and Kevin Wayne.
+ *
+ *  @author Robert Sedgewick
+ *  @author Kevin Wayne
+ */
+public class TransitiveClosure {
+    private DirectedDFS[] tc;  // tc[v] = reachable from v
+
+    /**
+     * Computes the transitive closure of the digraph &lt;tt&gt;G&lt;/tt&gt;.
+     * @param G the digraph
+     */
+    public TransitiveClosure(Digraph G) {
+        tc = new DirectedDFS[G.V()];
+        for (int v = 0; v &lt; G.V(); v++)
+            tc[v] = new DirectedDFS(G, v);
+    }
+
+    /**
+     * Is there a directed path from vertex &lt;tt&gt;v&lt;/tt&gt; to vertex &lt;tt&gt;w&lt;/tt&gt; in the digraph?
+     * @param v the source vertex
+     * @param w the target vertex
+     * @return &lt;tt&gt;true&lt;/tt&gt; if there is a directed path from &lt;tt&gt;v&lt;/tt&gt; to &lt;tt&gt;w&lt;/tt&gt;,
+     *    &lt;tt&gt;false&lt;/tt&gt; otherwise
+     */
+    public boolean reachable(int v, int w) {
+        return tc[v].marked(w);
+    }
+
+    /**
+     * Unit tests the &lt;tt&gt;TransitiveClosure&lt;/tt&gt; data type.
+     */
+    public static void main(String[] args) {
+        In in = new In(args[0]);
+        Digraph G = new Digraph(in);
+
+        TransitiveClosure tc = new TransitiveClosure(G);
+
+        // print header
+        StdOut.print("     ");
+        for (int v = 0; v &lt; G.V(); v++)
+            StdOut.printf("%3d", v);
+        StdOut.println();
+        StdOut.println("--------------------------------------------");
+
+        // print transitive closure
+        for (int v = 0; v &lt; G.V(); v++) {
+            StdOut.printf("%3d: ", v);
+            for (int w = 0; w &lt; G.V(); w++) {
+                if (tc.reachable(v, w)) StdOut.printf("  T");
+                else                    StdOut.printf("   ");
+            }
+            StdOut.println();
+        }
+    }
+
+}
+</pre></body></html>

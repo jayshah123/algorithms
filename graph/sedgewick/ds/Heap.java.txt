@@ -1,0 +1,123 @@
+
+<!-- saved from url=(0044)http://algs4.cs.princeton.edu/24pq/Heap.java -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><div id="StayFocusd-infobar" style="display:none;">
+    <img src="chrome-extension://laankejkbhbdhmipfmgcngdelahlfoji/common/img/eye_19x19_red.png">
+    <span id="StayFocusd-infobar-msg"></span>
+    <span id="StayFocusd-infobar-links">
+        <a id="StayFocusd-infobar-never-show">hide forever</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a id="StayFocusd-infobar-hide">hide once</a>
+    </span>
+</div><pre style="word-wrap: break-word; white-space: pre-wrap;">/*************************************************************************
+ *  Compilation:  javac Heap.java
+ *  Execution:    java Heap &lt; input.txt
+ *  Dependencies: StdOut.java StdIn.java
+ *  Data files:   http://algs4.cs.princeton.edu/24pq/tiny.txt
+ *                http://algs4.cs.princeton.edu/24pq/words3.txt
+ *  
+ *  Sorts a sequence of strings from standard input using heapsort.
+ *
+ *  % more tiny.txt
+ *  S O R T E X A M P L E
+ *
+ *  % java Heap &lt; tiny.txt
+ *  A E E L M O P R S T X                 [ one string per line ]
+ *
+ *  % more words3.txt
+ *  bed bug dad yes zoo ... all bad yet
+ *
+ *  % java Heap &lt; words3.txt
+ *  all bad bed bug dad ... yes yet zoo   [ one string per line ]
+ *
+ *************************************************************************/
+
+/**
+ *  The &lt;tt&gt;Heap&lt;/tt&gt; class provides a static methods for heapsorting
+ *  an array.
+ *  &lt;p&gt;
+ *  For additional documentation, see &lt;a href="http://algs4.cs.princeton.edu/24pq"&gt;Section 2.4&lt;/a&gt; of
+ *  &lt;i&gt;Algorithms, 4th Edition&lt;/i&gt; by Robert Sedgewick and Kevin Wayne.
+ *
+ *  @author Robert Sedgewick
+ *  @author Kevin Wayne
+ */
+public class Heap {
+
+    // This class should not be instantiated.
+    private Heap() { }
+
+    /**
+     * Rearranges the array in ascending order, using the natural order.
+     * @param pq the array to be sorted
+     */
+    public static void sort(Comparable[] pq) {
+        int N = pq.length;
+        for (int k = N/2; k &gt;= 1; k--)
+            sink(pq, k, N);
+        while (N &gt; 1) {
+            exch(pq, 1, N--);
+            sink(pq, 1, N);
+        }
+    }
+
+   /***********************************************************************
+    * Helper functions to restore the heap invariant.
+    **********************************************************************/
+
+    private static void sink(Comparable[] pq, int k, int N) {
+        while (2*k &lt;= N) {
+            int j = 2*k;
+            if (j &lt; N &amp;&amp; less(pq, j, j+1)) j++;
+            if (!less(pq, k, j)) break;
+            exch(pq, k, j);
+            k = j;
+        }
+    }
+
+   /***********************************************************************
+    * Helper functions for comparisons and swaps.
+    * Indices are "off-by-one" to support 1-based indexing.
+    **********************************************************************/
+    private static boolean less(Comparable[] pq, int i, int j) {
+        return pq[i-1].compareTo(pq[j-1]) &lt; 0;
+    }
+
+    private static void exch(Object[] pq, int i, int j) {
+        Object swap = pq[i-1];
+        pq[i-1] = pq[j-1];
+        pq[j-1] = swap;
+    }
+
+    // is v &lt; w ?
+    private static boolean less(Comparable v, Comparable w) {
+        return (v.compareTo(w) &lt; 0);
+    }
+        
+
+   /***********************************************************************
+    *  Check if array is sorted - useful for debugging
+    ***********************************************************************/
+    private static boolean isSorted(Comparable[] a) {
+        for (int i = 1; i &lt; a.length; i++)
+            if (less(a[i], a[i-1])) return false;
+        return true;
+    }
+
+
+    // print array to standard output
+    private static void show(Comparable[] a) {
+        for (int i = 0; i &lt; a.length; i++) {
+            StdOut.println(a[i]);
+        }
+    }
+
+    /**
+     * Reads in a sequence of strings from standard input; heapsorts them; 
+     * and prints them to standard output in ascending order. 
+     */
+    public static void main(String[] args) {
+        String[] a = StdIn.readAllStrings();
+        Heap.sort(a);
+        show(a);
+    }
+}
+</pre></body></html>

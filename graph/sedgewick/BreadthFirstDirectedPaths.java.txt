@@ -1,0 +1,189 @@
+
+<!-- saved from url=(0071)http://algs4.cs.princeton.edu/42directed/BreadthFirstDirectedPaths.java -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><div id="StayFocusd-infobar" style="display:none;">
+    <img src="chrome-extension://laankejkbhbdhmipfmgcngdelahlfoji/common/img/eye_19x19_red.png">
+    <span id="StayFocusd-infobar-msg"></span>
+    <span id="StayFocusd-infobar-links">
+        <a id="StayFocusd-infobar-never-show">hide forever</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a id="StayFocusd-infobar-hide">hide once</a>
+    </span>
+</div><pre style="word-wrap: break-word; white-space: pre-wrap;">/*************************************************************************
+ *  Compilation:  javac BreadthFirstDirectedPaths.java
+ *  Execution:    java BreadthFirstDirectedPaths V E
+ *  Dependencies: Digraph.java Queue.java Stack.java
+ *
+ *  Run breadth first search on a digraph.
+ *  Runs in O(E + V) time.
+ *
+ *  % java BreadthFirstDirectedPaths tinyDG.txt 3
+ *  3 to 0 (2):  3-&gt;2-&gt;0
+ *  3 to 1 (3):  3-&gt;2-&gt;0-&gt;1
+ *  3 to 2 (1):  3-&gt;2
+ *  3 to 3 (0):  3
+ *  3 to 4 (2):  3-&gt;5-&gt;4
+ *  3 to 5 (1):  3-&gt;5
+ *  3 to 6 (-):  not connected
+ *  3 to 7 (-):  not connected
+ *  3 to 8 (-):  not connected
+ *  3 to 9 (-):  not connected
+ *  3 to 10 (-):  not connected
+ *  3 to 11 (-):  not connected
+ *  3 to 12 (-):  not connected
+ *
+ *************************************************************************/
+
+/**
+ *  The &lt;tt&gt;BreadthDirectedFirstPaths&lt;/tt&gt; class represents a data type for finding
+ *  shortest paths (number of edges) from a source vertex &lt;em&gt;s&lt;/em&gt;
+ *  (or set of source vertices) to every other vertex in the digraph.
+ *  &lt;p&gt;
+ *  This implementation uses breadth-first search.
+ *  The constructor takes time proportional to &lt;em&gt;V&lt;/em&gt; + &lt;em&gt;E&lt;/em&gt;,
+ *  where &lt;em&gt;V&lt;/em&gt; is the number of vertices and &lt;em&gt;E&lt;/em&gt; is the number of edges.
+ *  It uses extra space (not including the digraph) proportional to &lt;em&gt;V&lt;/em&gt;.
+ *  &lt;p&gt;
+ *  For additional documentation, see &lt;a href="/algs4/41graph"&gt;Section 4.1&lt;/a&gt; of
+ *  &lt;i&gt;Algorithms, 4th Edition&lt;/i&gt; by Robert Sedgewick and Kevin Wayne.
+ *
+ *  @author Robert Sedgewick
+ *  @author Kevin Wayne
+ */
+public class BreadthFirstDirectedPaths {
+    private static final int INFINITY = Integer.MAX_VALUE;
+    private boolean[] marked;  // marked[v] = is there an s-&gt;v path?
+    private int[] edgeTo;      // edgeTo[v] = last edge on shortest s-&gt;v path
+    private int[] distTo;      // distTo[v] = length of shortest s-&gt;v path
+
+    /**
+     * Computes the shortest path from &lt;tt&gt;s&lt;/tt&gt; and every other vertex in graph &lt;tt&gt;G&lt;/tt&gt;.
+     * @param G the digraph
+     * @param s the source vertex
+     */
+    public BreadthFirstDirectedPaths(Digraph G, int s) {
+        marked = new boolean[G.V()];
+        distTo = new int[G.V()];
+        edgeTo = new int[G.V()];
+        for (int v = 0; v &lt; G.V(); v++) distTo[v] = INFINITY;
+        bfs(G, s);
+    }
+
+    /**
+     * Computes the shortest path from any one of the source vertices in &lt;tt&gt;sources&lt;/tt&gt;
+     * to every other vertex in graph &lt;tt&gt;G&lt;/tt&gt;.
+     * @param G the digraph
+     * @param sources the source vertices
+     */
+    public BreadthFirstDirectedPaths(Digraph G, Iterable&lt;Integer&gt; sources) {
+        marked = new boolean[G.V()];
+        distTo = new int[G.V()];
+        edgeTo = new int[G.V()];
+        for (int v = 0; v &lt; G.V(); v++) distTo[v] = INFINITY;
+        bfs(G, sources);
+    }
+
+    // BFS from single source
+    private void bfs(Digraph G, int s) {
+        Queue&lt;Integer&gt; q = new Queue&lt;Integer&gt;();
+        marked[s] = true;
+        distTo[s] = 0;
+        q.enqueue(s);
+        while (!q.isEmpty()) {
+            int v = q.dequeue();
+            for (int w : G.adj(v)) {
+                if (!marked[w]) {
+                    edgeTo[w] = v;
+                    distTo[w] = distTo[v] + 1;
+                    marked[w] = true;
+                    q.enqueue(w);
+                }
+            }
+        }
+    }
+
+    // BFS from multiple sources
+    private void bfs(Digraph G, Iterable&lt;Integer&gt; sources) {
+        Queue&lt;Integer&gt; q = new Queue&lt;Integer&gt;();
+        for (int s : sources) {
+            marked[s] = true;
+            distTo[s] = 0;
+            q.enqueue(s);
+        }
+        while (!q.isEmpty()) {
+            int v = q.dequeue();
+            for (int w : G.adj(v)) {
+                if (!marked[w]) {
+                    edgeTo[w] = v;
+                    distTo[w] = distTo[v] + 1;
+                    marked[w] = true;
+                    q.enqueue(w);
+                }
+            }
+        }
+    }
+
+    /**
+     * Is there a directed path from the source &lt;tt&gt;s&lt;/tt&gt; (or sources) to vertex &lt;tt&gt;v&lt;/tt&gt;?
+     * @param v the vertex
+     * @return &lt;tt&gt;true&lt;/tt&gt; if there is a directed path, &lt;tt&gt;false&lt;/tt&gt; otherwise
+     */
+    public boolean hasPathTo(int v) {
+        return marked[v];
+    }
+
+    /**
+     * Returns the number of edges in a shortest path from the source &lt;tt&gt;s&lt;/tt&gt;
+     * (or sources) to vertex &lt;tt&gt;v&lt;/tt&gt;?
+     * @param v the vertex
+     * @return the number of edges in a shortest path
+     */
+    public int distTo(int v) {
+        return distTo[v];
+    }
+
+    /**
+     * Returns a shortest path from &lt;tt&gt;s&lt;/tt&gt; (or sources) to &lt;tt&gt;v&lt;/tt&gt;, or
+     * &lt;tt&gt;null&lt;/tt&gt; if no such path.
+     * @param v the vertex
+     * @return the sequence of vertices on a shortest path, as an Iterable
+     */
+    public Iterable&lt;Integer&gt; pathTo(int v) {
+        if (!hasPathTo(v)) return null;
+        Stack&lt;Integer&gt; path = new Stack&lt;Integer&gt;();
+        int x;
+        for (x = v; distTo[x] != 0; x = edgeTo[x])
+            path.push(x);
+        path.push(x);
+        return path;
+    }
+
+    /**
+     * Unit tests the &lt;tt&gt;BreadthFirstDirectedPaths&lt;/tt&gt; data type.
+     */
+    public static void main(String[] args) {
+        In in = new In(args[0]);
+        Digraph G = new Digraph(in);
+        // StdOut.println(G);
+
+        int s = Integer.parseInt(args[1]);
+        BreadthFirstDirectedPaths bfs = new BreadthFirstDirectedPaths(G, s);
+
+        for (int v = 0; v &lt; G.V(); v++) {
+            if (bfs.hasPathTo(v)) {
+                StdOut.printf("%d to %d (%d):  ", s, v, bfs.distTo(v));
+                for (int x : bfs.pathTo(v)) {
+                    if (x == s) StdOut.print(x);
+                    else        StdOut.print("-&gt;" + x);
+                }
+                StdOut.println();
+            }
+
+            else {
+                StdOut.printf("%d to %d (-):  not connected\n", s, v);
+            }
+
+        }
+    }
+
+
+}
+</pre></body></html>

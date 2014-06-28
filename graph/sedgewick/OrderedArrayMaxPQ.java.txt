@@ -1,0 +1,79 @@
+
+<!-- saved from url=(0057)http://algs4.cs.princeton.edu/24pq/OrderedArrayMaxPQ.java -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><div id="StayFocusd-infobar" style="display:none;">
+    <img src="chrome-extension://laankejkbhbdhmipfmgcngdelahlfoji/common/img/eye_19x19_red.png">
+    <span id="StayFocusd-infobar-msg"></span>
+    <span id="StayFocusd-infobar-links">
+        <a id="StayFocusd-infobar-never-show">hide forever</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a id="StayFocusd-infobar-hide">hide once</a>
+    </span>
+</div><pre style="word-wrap: break-word; white-space: pre-wrap;">/*************************************************************************
+ *  Compilation:  javac OrderedArrayMaxPQ.java
+ *  Execution:    java OrderedArrayMaxPQ
+ *  
+ *  Priority queue implementation with an ordered array.
+ *
+ *  Limitations
+ *  -----------
+ *   - no array resizing 
+ *   - does not check for overflow or underflow.
+ *  
+ *
+ *************************************************************************/
+
+public class OrderedArrayMaxPQ&lt;Key extends Comparable&lt;Key&gt;&gt; {
+    private Key[] pq;          // elements
+    private int N;             // number of elements
+
+    // set inititial size of heap to hold size elements
+    public OrderedArrayMaxPQ(int capacity) {
+        pq = (Key[]) (new Comparable[capacity]);
+        N = 0;
+    }
+
+
+    public boolean isEmpty() { return N == 0;  }
+    public int size()        { return N;       } 
+    public Key delMax()      { return pq[--N]; }
+
+    public void insert(Key key) {
+        int i = N-1;
+        while (i &gt;= 0 &amp;&amp; less(key, pq[i])) {
+            pq[i+1] = pq[i];
+            i--;
+        }
+        pq[i+1] = key;
+        N++;
+    }
+
+
+
+   /***********************************************************************
+    * Helper functions.
+    **********************************************************************/
+    private boolean less(Key v, Key w) {
+        return (v.compareTo(w) &lt; 0);
+    }
+
+    private void exch(int i, int j) {
+        Key swap = pq[i];
+        pq[i] = pq[j];
+        pq[j] = swap;
+    }
+
+
+   /***********************************************************************
+    * Test routine.
+    **********************************************************************/
+    public static void main(String[] args) {
+        OrderedArrayMaxPQ&lt;String&gt; pq = new OrderedArrayMaxPQ&lt;String&gt;(10);
+        pq.insert("this");
+        pq.insert("is");
+        pq.insert("a");
+        pq.insert("test");
+        while (!pq.isEmpty())
+            StdOut.println(pq.delMax());
+    }
+
+}
+</pre></body></html>

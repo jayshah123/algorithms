@@ -1,0 +1,95 @@
+
+<!-- saved from url=(0052)http://algs4.cs.princeton.edu/44sp/DirectedEdge.java -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><div id="StayFocusd-infobar" style="display:none;">
+    <img src="chrome-extension://laankejkbhbdhmipfmgcngdelahlfoji/common/img/eye_19x19_red.png">
+    <span id="StayFocusd-infobar-msg"></span>
+    <span id="StayFocusd-infobar-links">
+        <a id="StayFocusd-infobar-never-show">hide forever</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a id="StayFocusd-infobar-hide">hide once</a>
+    </span>
+</div><pre style="word-wrap: break-word; white-space: pre-wrap;">/*************************************************************************
+ *  Compilation:  javac DirectedEdge.java
+ *  Execution:    java DirectedEdge
+ *
+ *  Immutable weighted directed edge.
+ *
+ *************************************************************************/
+/**
+ *  The &lt;tt&gt;DirectedEdge&lt;/tt&gt; class represents a weighted edge in an 
+ *  {@link EdgeWeightedDigraph}. Each edge consists of two integers
+ *  (naming the two vertices) and a real-value weight. The data type
+ *  provides methods for accessing the two endpoints of the directed edge and
+ *  the weight.
+ *  &lt;p&gt;
+ *  For additional documentation, see &lt;a href="http://algs4.cs.princeton.edu/44sp"&gt;Section 4.4&lt;/a&gt; of
+ *  &lt;i&gt;Algorithms, 4th Edition&lt;/i&gt; by Robert Sedgewick and Kevin Wayne.
+ *
+ *  @author Robert Sedgewick
+ *  @author Kevin Wayne
+ */
+
+public class DirectedEdge { 
+    private final int v;
+    private final int w;
+    private final double weight;
+
+    /**
+     * Initializes a directed edge from vertex &lt;tt&gt;v&lt;/tt&gt; to vertex &lt;tt&gt;w&lt;/tt&gt; with
+     * the given &lt;tt&gt;weight&lt;/tt&gt;.
+     * @param v the tail vertex
+     * @param w the head vertex
+     * @param weight the weight of the directed edge
+     * @throws java.lang.IndexOutOfBoundsException if either &lt;tt&gt;v&lt;/tt&gt; or &lt;tt&gt;w&lt;/tt&gt;
+     *    is a negative integer
+     * @throws IllegalArgumentException if &lt;tt&gt;weight&lt;/tt&gt; is &lt;tt&gt;NaN&lt;/tt&gt;
+     */
+    public DirectedEdge(int v, int w, double weight) {
+        if (v &lt; 0) throw new IndexOutOfBoundsException("Vertex names must be nonnegative integers");
+        if (w &lt; 0) throw new IndexOutOfBoundsException("Vertex names must be nonnegative integers");
+        if (Double.isNaN(weight)) throw new IllegalArgumentException("Weight is NaN");
+        this.v = v;
+        this.w = w;
+        this.weight = weight;
+    }
+
+    /**
+     * Returns the tail vertex of the directed edge.
+     * @return the tail vertex of the directed edge
+     */
+    public int from() {
+        return v;
+    }
+
+    /**
+     * Returns the head vertex of the directed edge.
+     * @return the head vertex of the directed edge
+     */
+    public int to() {
+        return w;
+    }
+
+    /**
+     * Returns the weight of the directed edge.
+     * @return the weight of the directed edge
+     */
+    public double weight() {
+        return weight;
+    }
+
+    /**
+     * Returns a string representation of the directed edge.
+     * @return a string representation of the directed edge
+     */
+    public String toString() {
+        return v + "-&gt;" + w + " " + String.format("%5.2f", weight);
+    }
+
+    /**
+     * Unit tests the &lt;tt&gt;DirectedEdge&lt;/tt&gt; data type.
+     */
+    public static void main(String[] args) {
+        DirectedEdge e = new DirectedEdge(12, 23, 3.14);
+        StdOut.println(e);
+    }
+}
+</pre></body></html>

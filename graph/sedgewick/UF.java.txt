@@ -1,0 +1,205 @@
+
+<!-- saved from url=(0043)http://algs4.cs.princeton.edu/43mst/UF.java -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><div id="StayFocusd-infobar" style="display:none;">
+    <img src="chrome-extension://laankejkbhbdhmipfmgcngdelahlfoji/common/img/eye_19x19_red.png">
+    <span id="StayFocusd-infobar-msg"></span>
+    <span id="StayFocusd-infobar-links">
+        <a id="StayFocusd-infobar-never-show">hide forever</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a id="StayFocusd-infobar-hide">hide once</a>
+    </span>
+</div><pre style="word-wrap: break-word; white-space: pre-wrap;">/****************************************************************************
+ *  Compilation:  javac UF.java
+ *  Execution:    java UF &lt; input.txt
+ *  Dependencies: StdIn.java StdOut.java
+ *  Data files:   http://algs4.cs.princeton.edu/15uf/tinyUF.txt
+ *                http://algs4.cs.princeton.edu/15uf/mediumUF.txt
+ *                http://algs4.cs.princeton.edu/15uf/largeUF.txt
+ *
+ *  Weighted quick-union by rank with path compression by halving.
+ *
+ *  % java UF &lt; tinyUF.txt
+ *  4 3
+ *  3 8
+ *  6 5
+ *  9 4
+ *  2 1
+ *  5 0
+ *  7 2
+ *  6 1
+ *  2 components
+ *
+ ****************************************************************************/
+
+
+/**
+ *  The &lt;tt&gt;UF&lt;/tt&gt; class represents a &lt;em&gt;union-find data type&lt;/em&gt;
+ *  (also known as the &lt;em&gt;disjoint-sets data type&lt;/em&gt;).
+ *  It supports the &lt;em&gt;union&lt;/em&gt; and &lt;em&gt;find&lt;/em&gt; operations,
+ *  along with a &lt;em&gt;connected&lt;/em&gt; operation for determinig whether
+ *  two sites in the same component and a &lt;em&gt;count&lt;/em&gt; operation that
+ *  returns the total number of components.
+ *  &lt;p&gt;
+ *  The union-find data type models connectivity among a set of &lt;em&gt;N&lt;/em&gt;
+ *  sites, named 0 through &lt;em&gt;N&lt;/em&gt; &amp;ndash; 1.
+ *  The &lt;em&gt;is-connected-to&lt;/em&gt; relation must be an 
+ *  &lt;em&gt;equivalence relation&lt;/em&gt;:
+ *  &lt;ul&gt;
+ *  &lt;p&gt;&lt;li&gt; &lt;em&gt;Reflexive&lt;/em&gt;: &lt;em&gt;p&lt;/em&gt; is connected to &lt;em&gt;p&lt;/em&gt;.
+ *  &lt;p&gt;&lt;li&gt; &lt;em&gt;Symmetric&lt;/em&gt;: If &lt;em&gt;p&lt;/em&gt; is connected to &lt;em&gt;q&lt;/em&gt;,
+ *          &lt;em&gt;q&lt;/em&gt; is connected to &lt;em&gt;p&lt;/em&gt;.
+ *  &lt;p&gt;&lt;li&gt; &lt;em&gt;Transitive&lt;/em&gt;: If &lt;em&gt;p&lt;/em&gt; is connected to &lt;em&gt;q&lt;/em&gt;
+ *          and &lt;em&gt;q&lt;/em&gt; is connected to &lt;em&gt;r&lt;/em&gt;, then
+ *          &lt;em&gt;p&lt;/em&gt; is connected to &lt;em&gt;r&lt;/em&gt;.
+ *  &lt;/ul&gt;
+ *  An equivalence relation partitions the sites into
+ *  &lt;em&gt;equivalence classes&lt;/em&gt; (or &lt;em&gt;components&lt;/em&gt;). In this case,
+ *  two sites are in the same component if and only if they are connected.
+ *  Both sites and components are identified with integers between 0 and
+ *  &lt;em&gt;N&lt;/em&gt; &amp;ndash; 1. 
+ *  Initially, there are &lt;em&gt;N&lt;/em&gt; components, with each site in its
+ *  own component.  The &lt;em&gt;component identifier&lt;/em&gt; of a component
+ *  (also known as the &lt;em&gt;root&lt;/em&gt;, &lt;em&gt;canonical element&lt;/em&gt;, &lt;em&gt;leader&lt;/em&gt;,
+ *  or &lt;em&gt;set representative&lt;/em&gt;) is one of the sites in the component:
+ *  two sites have the same component identifier if and only if they are
+ *  in the same component.
+ *  &lt;ul&gt;
+ *  &lt;p&gt;&lt;li&gt;&lt;em&gt;union&lt;/em&gt;(&lt;em&gt;p&lt;/em&gt;, &lt;em&gt;q&lt;/em&gt;) adds a
+ *         connection between the two sites &lt;em&gt;p&lt;/em&gt; and &lt;em&gt;q&lt;/em&gt;.
+ *         If &lt;em&gt;p&lt;/em&gt; and &lt;em&gt;q&lt;/em&gt; are in different components,
+ *         then it replaces
+ *         these two components with a new component that is the union of
+ *         the two.
+ *  &lt;p&gt;&lt;li&gt;&lt;em&gt;find&lt;/em&gt;(&lt;em&gt;p&lt;/em&gt;) returns the component
+ *         identifier of the component containing &lt;em&gt;p&lt;/em&gt;.
+ *  &lt;p&gt;&lt;li&gt;&lt;em&gt;connected&lt;/em&gt;(&lt;em&gt;p&lt;/em&gt;, &lt;em&gt;q&lt;/em&gt;)
+ *         returns true if both &lt;em&gt;p&lt;/em&gt; and &lt;em&gt;q&lt;/em&gt;
+ *         are in the same component, and false otherwise.
+ *  &lt;p&gt;&lt;li&gt;&lt;em&gt;count&lt;/em&gt;() returns the number of components.
+ *  &lt;/ul&gt;
+ *  The component identifier of a component can change
+ *  only when the component itself changes during a call to
+ *  &lt;em&gt;union&lt;/em&gt;&amp;mdash;it cannot change during a call
+ *  to &lt;em&gt;find&lt;/em&gt;, &lt;em&gt;connected&lt;/em&gt;, or &lt;em&gt;count&lt;/em&gt;.
+ *  &lt;p&gt;
+ *  This implementation uses weighted quick union by rank with path compression
+ *  by halving.
+ *  Initializing a data structure with &lt;em&gt;N&lt;/em&gt; sites takes linear time.
+ *  Afterwards, the &lt;em&gt;union&lt;/em&gt;, &lt;em&gt;find&lt;/em&gt;, and &lt;em&gt;connected&lt;/em&gt; 
+ *  operations take logarithmic time (in the worst case) and the
+ *  &lt;em&gt;count&lt;/em&gt; operation takes constant time.
+ *  Moreover, the amortized time per &lt;em&gt;union&lt;/em&gt;, &lt;em&gt;find&lt;/em&gt;,
+ *  and &lt;em&gt;connected&lt;/em&gt; operation has inverse Ackermann complexity.
+ *  For alternate implementations of the same API, see
+ *  {@link QuickUnionUF}, {@link QuickFindUF}, and {@link WeightedQuickUnionUF}.
+ *
+ *  &lt;p&gt;
+ *  For additional documentation, see &lt;a href="http://algs4.cs.princeton.edu/15uf"&gt;Section 1.5&lt;/a&gt; of
+ *  &lt;i&gt;Algorithms, 4th Edition&lt;/i&gt; by Robert Sedgewick and Kevin Wayne.
+ *
+ *  @author Robert Sedgewick
+ *  @author Kevin Wayne
+ */
+
+public class UF {
+    private int[] id;     // id[i] = parent of i
+    private byte[] rank;  // rank[i] = rank of subtree rooted at i (cannot be more than 31)
+    private int count;    // number of components
+
+    /**
+     * Initializes an empty union-find data structure with &lt;tt&gt;N&lt;/tt&gt;
+     * isolated components &lt;tt&gt;0&lt;/tt&gt; through &lt;tt&gt;N-1&lt;/tt&gt;
+     * @throws java.lang.IllegalArgumentException if &lt;tt&gt;N &amp;lt; 0&lt;/tt&gt;
+     * @param N the number of sites
+     */
+    public UF(int N) {
+        if (N &lt; 0) throw new IllegalArgumentException();
+        count = N;
+        id = new int[N];
+        rank = new byte[N];
+        for (int i = 0; i &lt; N; i++) {
+            id[i] = i;
+            rank[i] = 0;
+        }
+    }
+
+    /**
+     * Returns the component identifier for the component containing site &lt;tt&gt;p&lt;/tt&gt;.
+     * @param p the integer representing one object
+     * @return the component identifier for the component containing site &lt;tt&gt;p&lt;/tt&gt;
+     * @throws java.lang.IndexOutOfBoundsException unless &lt;tt&gt;0 &amp;le; p &amp;lt; N&lt;/tt&gt;
+     */
+    public int find(int p) {
+        if (p &lt; 0 || p &gt;= id.length) throw new IndexOutOfBoundsException();
+        while (p != id[p]) {
+            id[p] = id[id[p]];    // path compression by halving
+            p = id[p];
+        }
+        return p;
+    }
+
+    /**
+     * Returns the number of components.
+     * @return the number of components (between &lt;tt&gt;1&lt;/tt&gt; and &lt;tt&gt;N&lt;/tt&gt;)
+     */
+    public int count() {
+        return count;
+    }
+  
+    /**
+     * Are the two sites &lt;tt&gt;p&lt;/tt&gt; and &lt;tt&gt;q&lt;/tt&gt; in the same component?
+     * @param p the integer representing one site
+     * @param q the integer representing the other site
+     * @return true if the two sites &lt;tt&gt;p&lt;/tt&gt; and &lt;tt&gt;q&lt;/tt&gt; are in the same component; false otherwise
+     * @throws java.lang.IndexOutOfBoundsException unless
+     *      both &lt;tt&gt;0 &amp;le; p &amp;lt; N&lt;/tt&gt; and &lt;tt&gt;0 &amp;le; q &amp;lt; N&lt;/tt&gt;
+     */
+    public boolean connected(int p, int q) {
+        return find(p) == find(q);
+    }
+
+  
+    /**
+     * Merges the component containing site &lt;tt&gt;p&lt;/tt&gt; with the 
+     * the component containing site &lt;tt&gt;q&lt;/tt&gt;.
+     * @param p the integer representing one site
+     * @param q the integer representing the other site
+     * @throws java.lang.IndexOutOfBoundsException unless
+     *      both &lt;tt&gt;0 &amp;le; p &amp;lt; N&lt;/tt&gt; and &lt;tt&gt;0 &amp;le; q &amp;lt; N&lt;/tt&gt;
+     */
+    public void union(int p, int q) {
+        int i = find(p);
+        int j = find(q);
+        if (i == j) return;
+
+        // make root of smaller rank point to root of larger rank
+        if      (rank[i] &lt; rank[j]) id[i] = j;
+        else if (rank[i] &gt; rank[j]) id[j] = i;
+        else {
+            id[j] = i;
+            rank[i]++;
+        }
+        count--;
+    }
+
+
+    /**
+     * Reads in a an integer &lt;tt&gt;N&lt;/tt&gt; and a sequence of pairs of integers
+     * (between &lt;tt&gt;0&lt;/tt&gt; and &lt;tt&gt;N-1&lt;/tt&gt;) from standard input, where each integer
+     * in the pair represents some site;
+     * if the sites are in different components, merge the two components
+     * and print the pair to standard output.
+     */
+    public static void main(String[] args) {
+        int N = StdIn.readInt();
+        UF uf = new UF(N);
+        while (!StdIn.isEmpty()) {
+            int p = StdIn.readInt();
+            int q = StdIn.readInt();
+            if (uf.connected(p, q)) continue;
+            uf.union(p, q);
+            StdOut.println(p + " " + q);
+        }
+        StdOut.println(uf.count() + " components");
+    }
+}
+</pre></body></html>

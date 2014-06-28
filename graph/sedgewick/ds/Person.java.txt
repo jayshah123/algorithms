@@ -1,0 +1,58 @@
+
+<!-- saved from url=(0054)http://algs4.cs.princeton.edu/31elementary/Person.java -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><div id="StayFocusd-infobar" style="display:none;">
+    <img src="chrome-extension://laankejkbhbdhmipfmgcngdelahlfoji/common/img/eye_19x19_red.png">
+    <span id="StayFocusd-infobar-msg"></span>
+    <span id="StayFocusd-infobar-links">
+        <a id="StayFocusd-infobar-never-show">hide forever</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a id="StayFocusd-infobar-hide">hide once</a>
+    </span>
+</div><pre style="word-wrap: break-word; white-space: pre-wrap;">/*************************************************************************
+ *  Compilation:  javac Person.java
+ *  Execution:    java Person
+ * 
+ *  Implementing equals() in a client-defined type.
+ *
+ *************************************************************************/
+
+public final class Person {
+    private final String name;
+    private final long info;
+
+    public Person(String name, long info) {
+        this.name = name;
+        this.info = info;
+    }
+
+    // how you're supposed to implement equals
+    public boolean equals(Object y) {
+        if (y == this) return true;
+        if (y == null) return false;
+        if (y.getClass() != this.getClass()) return false;
+        Person that = (Person) y;
+        return (this.name.equals(that.name)) &amp;&amp; (this.info == that.info);
+    }
+
+    public String toString() {
+        return name + " " + info;
+    }
+
+    public static void main(String[] args) {
+        Person a = new Person("Alice", 1234);
+        Person b = new Person("Alice", 1234);
+        Person c = new Person("Bob",   1234);
+        Person d = new Person("Alice", 4321);
+        StdOut.println("a = " + a);
+        StdOut.println("b = " + b);
+        StdOut.println("c = " + c);
+        StdOut.println("d = " + d);
+        StdOut.println("a == a: " + a.equals(a));
+        StdOut.println("a == b: " + a.equals(b));
+        StdOut.println("a == c: " + a.equals(c));
+        StdOut.println("a == d: " + a.equals(d));
+    }
+
+
+
+}
+</pre></body></html>

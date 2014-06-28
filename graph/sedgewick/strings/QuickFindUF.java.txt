@@ -1,0 +1,117 @@
+
+<!-- saved from url=(0051)http://algs4.cs.princeton.edu/15uf/QuickFindUF.java -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><div id="StayFocusd-infobar" style="display:none;">
+    <img src="chrome-extension://laankejkbhbdhmipfmgcngdelahlfoji/common/img/eye_19x19_red.png">
+    <span id="StayFocusd-infobar-msg"></span>
+    <span id="StayFocusd-infobar-links">
+        <a id="StayFocusd-infobar-never-show">hide forever</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a id="StayFocusd-infobar-hide">hide once</a>
+    </span>
+</div><pre style="word-wrap: break-word; white-space: pre-wrap;">/****************************************************************************
+ *  Compilation:  javac QuickFindUF.java
+ *  Execution:  java QuickFindUF &lt; input.txt
+ *  Dependencies: StdIn.java StdOut.java
+ *
+ *  Quick-find algorithm.
+ *
+ ****************************************************************************/
+
+/**
+ *  The &lt;tt&gt;QuickFindUF&lt;/tt&gt; class represents a union-find data structure.
+ *  It supports the &lt;em&gt;union&lt;/em&gt; and &lt;em&gt;find&lt;/em&gt; operations, along with
+ *  methods for determinig whether two objects are in the same component
+ *  and the total number of components.
+ *  &lt;p&gt;
+ *  This implementation uses quick find.
+ *  Initializing a data structure with &lt;em&gt;N&lt;/em&gt; objects takes linear time.
+ *  Afterwards, &lt;em&gt;find&lt;/em&gt;, &lt;em&gt;connected&lt;/em&gt;, and &lt;em&gt;count&lt;/em&gt;
+ *  takes constant time but &lt;em&gt;union&lt;/em&gt; takes linear time.
+ *  &lt;p&gt;
+ *  For additional documentation, see &lt;a href="http://algs4.cs.princeton.edu/15uf"&gt;Section 1.5&lt;/a&gt; of
+ *  &lt;i&gt;Algorithms, 4th Edition&lt;/i&gt; by Robert Sedgewick and Kevin Wayne.
+ *     
+ *  @author Robert Sedgewick
+ *  @author Kevin Wayne
+ */
+public class QuickFindUF {
+    private int[] id;    // id[i] = component identifier of i
+    private int count;   // number of components
+
+    /**
+     * Initializes an empty union-find data structure with N isolated components 0 through N-1.
+     * @throws java.lang.IllegalArgumentException if N &lt; 0
+     * @param N the number of objects
+     */
+    public QuickFindUF(int N) {
+        count = N;
+        id = new int[N];
+        for (int i = 0; i &lt; N; i++)
+            id[i] = i;
+    }
+
+    /**
+     * Returns the number of components.
+     * @return the number of components (between 1 and N)
+     */
+    public int count() {
+        return count;
+    }
+
+    /**
+     * Returns the component identifier for the component containing site &lt;tt&gt;p&lt;/tt&gt;.
+     * @param p the integer representing one site
+     * @return the component identifier for the component containing site &lt;tt&gt;p&lt;/tt&gt;
+     * @throws java.lang.IndexOutOfBoundsException unless 0 &lt;= p &lt; N
+     */
+    public int find(int p) {
+        return id[p];
+    }
+
+    /**
+     * Are the two sites &lt;tt&gt;p&lt;/tt&gt; and &lt;tt&gt;q/tt&gt; in the same component?
+     * @param p the integer representing one site
+     * @param q the integer representing the other site
+     * @return &lt;tt&gt;true&lt;/tt&gt; if the two sites &lt;tt&gt;p&lt;/tt&gt; and &lt;tt&gt;q&lt;/tt&gt; are in
+     *    the same component, and &lt;tt&gt;false&lt;/tt&gt; otherwise
+     * @throws java.lang.IndexOutOfBoundsException unless both 0 &lt;= p &lt; N and 0 &lt;= q &lt; N
+     */
+    public boolean connected(int p, int q) {
+        return id[p] == id[q];
+    }
+  
+    /**
+     * Merges the component containing site&lt;tt&gt;p&lt;/tt&gt; with the component
+     * containing site &lt;tt&gt;q&lt;/tt&gt;.
+     * @param p the integer representing one site
+     * @param q the integer representing the other site
+     * @throws java.lang.IndexOutOfBoundsException unless both 0 &lt;= p &lt; N and 0 &lt;= q &lt; N
+     */
+    public void union(int p, int q) {
+        if (connected(p, q)) return;
+        int pid = id[p];
+        for (int i = 0; i &lt; id.length; i++)
+            if (id[i] == pid) id[i] = id[q]; 
+        count--;
+    }
+
+    /**
+     * Reads in a sequence of pairs of integers (between 0 and N-1) from standard input, 
+     * where each integer represents some object;
+     * if the objects are in different components, merge the two components
+     * and print the pair to standard output.
+     */
+    public static void main(String[] args) {
+        int N = StdIn.readInt();
+        QuickFindUF uf = new QuickFindUF(N);
+        while (!StdIn.isEmpty()) {
+            int p = StdIn.readInt();
+            int q = StdIn.readInt();
+            if (uf.connected(p, q)) continue;
+            uf.union(p, q);
+            StdOut.println(p + " " + q);
+        }
+        StdOut.println(uf.count() + " components");
+    }
+
+}
+</pre></body></html>

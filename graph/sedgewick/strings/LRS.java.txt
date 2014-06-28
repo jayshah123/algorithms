@@ -1,0 +1,58 @@
+
+<!-- saved from url=(0047)http://algs4.cs.princeton.edu/63suffix/LRS.java -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><div id="StayFocusd-infobar" style="display:none;">
+    <img src="chrome-extension://laankejkbhbdhmipfmgcngdelahlfoji/common/img/eye_19x19_red.png">
+    <span id="StayFocusd-infobar-msg"></span>
+    <span id="StayFocusd-infobar-links">
+        <a id="StayFocusd-infobar-never-show">hide forever</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a id="StayFocusd-infobar-hide">hide once</a>
+    </span>
+</div><pre style="word-wrap: break-word; white-space: pre-wrap;">/*************************************************************************
+ *  Compilation:  javac LRS.java
+ *  Execution:    java LRS &lt; file.txt
+ *  Dependencies: StdIn.java SuffixArray.java
+ *  Data files:   http://algs4.cs.princeton.edu/63suffix/tinyTale.txt
+ *                http://algs4.cs.princeton.edu/63suffix/mobydick.txt
+ *  
+ *  Reads a text string from stdin, replaces all consecutive blocks of
+ *  whitespace with a single space, and then computes the longest
+ *  repeated substring in that text using a suffix array.
+ * 
+ *  % java LRS &lt; tinyTale.txt 
+ *  'st of times it was the '
+ *
+ *  % java LRS &lt; mobydick.txt
+ *  ',- Such a funny, sporty, gamy, jesty, joky, hoky-poky lad, is the Ocean, oh! Th'
+ * 
+ *  % java LRS 
+ *  aaaaaaaaa
+ *  'aaaaaaaa'
+ *
+ *  % java LRS
+ *  abcdefg
+ *  ''
+ *
+ *************************************************************************/
+
+
+public class LRS {
+
+    public static void main(String[] args) {
+        String text = StdIn.readAll().replaceAll("\\s+", " ");
+        SuffixArray sa = new SuffixArray(text);
+
+        int N = sa.length();
+
+        String lrs = "";
+        for (int i = 1; i &lt; N; i++) {
+            int length = sa.lcp(i);
+            if (length &gt; lrs.length()) {
+                // lrs = sa.select(i).substring(0, length);
+                lrs = text.substring(sa.index(i), sa.index(i) + length);
+            }
+        }
+        
+        StdOut.println("'" + lrs + "'");
+    }
+}
+</pre></body></html>

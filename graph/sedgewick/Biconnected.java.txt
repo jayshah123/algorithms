@@ -1,0 +1,92 @@
+
+<!-- saved from url=(0059)http://algs4.cs.princeton.edu/41undirected/Biconnected.java -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><div id="StayFocusd-infobar" style="display: none; top: 0px;">
+    <img src="chrome-extension://laankejkbhbdhmipfmgcngdelahlfoji/common/img/eye_19x19_red.png">
+    <span id="StayFocusd-infobar-msg"></span>
+    <span id="StayFocusd-infobar-links">
+        <a id="StayFocusd-infobar-never-show">hide forever</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a id="StayFocusd-infobar-hide">hide once</a>
+    </span>
+</div><pre style="word-wrap: break-word; white-space: pre-wrap;">/*************************************************************************
+ *  Compilation:  javac Biconnected.java
+ *  Execution:    java Biconnected V E
+ *  Dependencies: Graph.java GraphGenerator.java
+ *
+ *  Identify articulation points and print them out.
+ *  This can be used to decompose a graph into biconnected components.
+ *  Runs in O(E + V) time.
+ *
+ *  http://www.cs.brown.edu/courses/cs016/book/slides/Connectivity2x2.pdf
+ *
+ *************************************************************************/
+
+public class Biconnected {
+    private int[] low;
+    private int[] pre;
+    private int cnt;
+    private int bridges;
+    private boolean[] articulation;
+
+    public Biconnected(Graph G) {
+        low = new int[G.V()];
+        pre = new int[G.V()];
+        articulation = new boolean[G.V()];
+        for (int v = 0; v &lt; G.V(); v++) low[v] = -1;
+        for (int v = 0; v &lt; G.V(); v++) pre[v] = -1;
+        
+        for (int v = 0; v &lt; G.V(); v++)
+            if (pre[v] == -1)
+                dfs(G, v, v);
+    }
+
+    private void dfs(Graph G, int u, int v) {
+        int children = 0;
+        pre[v] = cnt++;
+        low[v] = pre[v];
+        for (int w : G.adj(v)) {
+            if (pre[w] == -1) {
+                children++;
+                dfs(G, v, w);
+
+                // update low number
+                low[v] = Math.min(low[v], low[w]);
+
+                // non-root of DFS is an articulation point if low[w] &gt;= pre[v]
+                if (low[w] &gt;= pre[v] &amp;&amp; u != v) 
+                    articulation[v] = true;
+            }
+
+            // update low number - ignore reverse of edge leading to v
+            else if (w != u)
+                low[v] = Math.min(low[v], pre[w]);
+        }
+
+        // root of DFS is an articulation point if it has more than 1 child
+        if (u == v &amp;&amp; children &gt; 1)
+            articulation[v] = true;
+    }
+
+    // is vertex v an articulation point?
+    public boolean isArticulation(int v) { return articulation[v]; }
+
+    // test client
+    public static void main(String[] args) {
+        int V = Integer.parseInt(args[0]);
+        int E = Integer.parseInt(args[1]);
+        Graph G = GraphGenerator.simple(V, E);
+        StdOut.println(G);
+
+        Biconnected bic = new Biconnected(G);
+
+        // print out articulation points
+        StdOut.println();
+        StdOut.println("Articulation points");
+        StdOut.println("-------------------");
+        for (int v = 0; v &lt; G.V(); v++)
+            if (bic.isArticulation(v)) StdOut.println(v);
+    }
+
+
+}
+
+</pre></body></html>

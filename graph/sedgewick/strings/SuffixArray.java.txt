@@ -1,0 +1,221 @@
+
+<!-- saved from url=(0055)http://algs4.cs.princeton.edu/63suffix/SuffixArray.java -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><div id="StayFocusd-infobar" style="display:none;">
+    <img src="chrome-extension://laankejkbhbdhmipfmgcngdelahlfoji/common/img/eye_19x19_red.png">
+    <span id="StayFocusd-infobar-msg"></span>
+    <span id="StayFocusd-infobar-links">
+        <a id="StayFocusd-infobar-never-show">hide forever</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a id="StayFocusd-infobar-hide">hide once</a>
+    </span>
+</div><pre style="word-wrap: break-word; white-space: pre-wrap;">/*************************************************************************
+ *  Compilation:  javac SuffixArray.java
+ *  Execution:  java SuffixArray &lt; input.txt
+ *
+ *  A data type that computes the suffix array of a string.
+ *
+ *   % java SuffixArray &lt; abra.txt
+ *    i ind lcp rnk  select
+ *   ---------------------------
+ *    0  11   -   0  "!"
+ *    1  10   0   1  "A!"
+ *    2   7   1   2  "ABRA!"
+ *    3   0   4   3  "ABRACADABRA!"
+ *    4   3   1   4  "ACADABRA!"
+ *    5   5   1   5  "ADABRA!"
+ *    6   8   0   6  "BRA!"
+ *    7   1   3   7  "BRACADABRA!"
+ *    8   4   0   8  "CADABRA!"
+ *    9   6   0   9  "DABRA!"
+ *   10   9   0  10  "RA!"
+ *   11   2   2  11  "RACADABRA!"
+ *
+ *  See SuffixArrayX.java for an optimized version that uses 3-way
+ *  radix quicksort and does not use the nested class Suffix.
+ *
+ *************************************************************************/
+
+import java.util.Arrays;
+
+/**
+ *  The &lt;tt&gt;SuffixArray&lt;/tt&gt; class represents a suffix array of a string of
+ *  length &lt;em&gt;N&lt;/em&gt;.
+ *  It supports the &lt;em&gt;selecting&lt;/em&gt; the &lt;em&gt;i&lt;/em&gt;th smallest suffix,
+ *  getting the &lt;em&gt;index&lt;/em&gt; of the &lt;em&gt;i&lt;/em&gt;th smallest suffix,
+ *  computing the length of the &lt;em&gt;longest common prefix&lt;/em&gt; between the
+ *  &lt;em&gt;i&lt;/em&gt;th smallest suffix and the &lt;em&gt;i&lt;/em&gt;-1st smallest suffix,
+ *  and determining the &lt;em&gt;rank&lt;/em&gt; of a query string (which is the number
+ *  of suffixes strictly less than the query string).
+ *  &lt;p&gt;
+ *  This implementation uses a nested class &lt;tt&gt;Suffix&lt;/tt&gt; to represent
+ *  a suffix of a string (using constant time and space) and
+ *  &lt;tt&gt;Arrays.sort()&lt;/tt&gt; to sort the array of suffixes.
+ *  For alternate implementations of the same API, see
+ *  {@link SuffixArrayX}, which is faster in practice (uses 3-way radix quicksort)
+ *  and uses less memory (does not create &lt;tt&gt;Suffix&lt;/tt&gt; objects).
+ *  The &lt;em&gt;index&lt;/em&gt; and &lt;em&gt;length&lt;/em&gt; operations takes constant time 
+ *  in the worst case. The &lt;em&gt;lcp&lt;/em&gt; operation takes time proportional to the
+ *  length of the longest common prefix.
+ *  The &lt;em&gt;select&lt;/em&gt; operation takes time proportional
+ *  to the length of the suffix and should be used primarily for debugging.
+ *  &lt;p&gt;
+ *  For additional documentation, see &lt;a href="http://algs4.cs.princeton.edu/63suffix"&gt;Section 6.3&lt;/a&gt; of
+ *  &lt;i&gt;Algorithms, 4th Edition&lt;/i&gt; by Robert Sedgewick and Kevin Wayne.
+ */
+public class SuffixArray {
+    private Suffix[] suffixes;
+
+    /**
+     * Initializes a suffix array for the given &lt;tt&gt;text&lt;/tt&gt; string.
+     * @param text the input string
+     */
+    public SuffixArray(String text) {
+        int N = text.length();
+        this.suffixes = new Suffix[N];
+        for (int i = 0; i &lt; N; i++)
+            suffixes[i] = new Suffix(text, i);
+        Arrays.sort(suffixes);
+    }
+
+    private static class Suffix implements Comparable&lt;Suffix&gt; {
+        private final String text;
+        private final int index;
+
+        private Suffix(String text, int index) {
+            this.text = text;
+            this.index = index;
+        }
+        private int length() {
+            return text.length() - index;
+        }
+        private char charAt(int i) {
+            return text.charAt(index + i);
+        }
+
+        public int compareTo(Suffix that) {
+            if (this == that) return 0;  // optimization
+            int N = Math.min(this.length(), that.length());
+            for (int i = 0; i &lt; N; i++) {
+                if (this.charAt(i) &lt; that.charAt(i)) return -1;
+                if (this.charAt(i) &gt; that.charAt(i)) return +1;
+            }
+            return this.length() - that.length();
+        }
+
+        public String toString() {
+            return text.substring(index);
+        }
+    }
+
+    /**
+     * Returns the length of the input string.
+     * @return the length of the input string
+     */
+    public int length() {
+        return suffixes.length;
+    }
+
+
+    /**
+     * Returns the index into the original string of the &lt;em&gt;i&lt;/em&gt;th smallest suffix.
+     * That is, &lt;tt&gt;text.substring(sa.index(i))&lt;/tt&gt; is the &lt;em&gt;i&lt;/em&gt;th smallest suffix.
+     * @param i an integer between 0 and &lt;em&gt;N&lt;/em&gt;-1
+     * @return the index into the original string of the &lt;em&gt;i&lt;/em&gt;th smallest suffix
+     * @throws java.lang.IndexOutOfBoundsException unless 0 &amp;le; &lt;em&gt;i&lt;/em&gt; &amp;lt; &lt;Em&gt;N&lt;/em&gt;
+     */
+    public int index(int i) {
+        if (i &lt; 0 || i &gt;= suffixes.length) throw new IndexOutOfBoundsException();
+        return suffixes[i].index;
+    }
+
+
+    /**
+     * Returns the length of the longest common prefix of the &lt;em&gt;i&lt;/em&gt;th
+     * smallest suffix and the &lt;em&gt;i&lt;/em&gt;-1st smallest suffix.
+     * @param i an integer between 1 and &lt;em&gt;N&lt;/em&gt;-1
+     * @return the length of the longest common prefix of the &lt;em&gt;i&lt;/em&gt;th
+     * smallest suffix and the &lt;em&gt;i&lt;/em&gt;-1st smallest suffix.
+     * @throws java.lang.IndexOutOfBoundsException unless 1 &amp;le; &lt;em&gt;i&lt;/em&gt; &amp;lt; &lt;em&gt;N&lt;/em&gt;
+     */
+    public int lcp(int i) {
+        if (i &lt; 1 || i &gt;= suffixes.length) throw new IndexOutOfBoundsException();
+        return lcp(suffixes[i], suffixes[i-1]);
+    }
+
+    // longest common prefix of s and t
+    private static int lcp(Suffix s, Suffix t) {
+        int N = Math.min(s.length(), t.length());
+        for (int i = 0; i &lt; N; i++) {
+            if (s.charAt(i) != t.charAt(i)) return i;
+        }
+        return N;
+    }
+
+    /**
+     * Returns the &lt;em&gt;i&lt;/em&gt;th smallest suffix as a string.
+     * @param i the index
+     * @return the &lt;em&gt;i&lt;/em&gt; smallest suffix as a string
+     * @throws java.lang.IndexOutOfBoundsException unless 0 &amp;le; &lt;em&gt;i&lt;/em&gt; &amp;lt; &lt;Em&gt;N&lt;/em&gt;
+     */
+    public String select(int i) {
+        if (i &lt; 0 || i &gt;= suffixes.length) throw new IndexOutOfBoundsException();
+         return suffixes[i].toString();
+    }
+
+    /**
+     * Returns the number of suffixes strictly less than the &lt;tt&gt;query&lt;/tt&gt; string.
+     * We note that &lt;tt&gt;rank(select(i))&lt;/tt&gt; equals &lt;tt&gt;i&lt;/tt&gt; for each &lt;tt&gt;i&lt;/tt&gt;
+     * between 0 and &lt;em&gt;N&lt;/em&gt;-1.
+     * @param query the query string
+     * @return the number of suffixes strictly less than &lt;tt&gt;query&lt;/tt&gt;
+     */
+    public int rank(String query) {
+        int lo = 0, hi = suffixes.length - 1;
+        while (lo &lt;= hi) {
+            int mid = lo + (hi - lo) / 2;
+            int cmp = compare(query, suffixes[mid]);
+            if (cmp &lt; 0) hi = mid - 1;
+            else if (cmp &gt; 0) lo = mid + 1;
+            else return mid;
+        }
+        return lo;
+    }
+
+    // compare query string to suffix
+    private static int compare(String query, Suffix suffix) {
+        int N = Math.min(query.length(), suffix.length());
+        for (int i = 0; i &lt; N; i++) {
+            if (query.charAt(i) &lt; suffix.charAt(i)) return -1;
+            if (query.charAt(i) &gt; suffix.charAt(i)) return +1;
+        }
+        return query.length() - suffix.length();
+    }
+
+    /**
+     * Unit tests the &lt;tt&gt;SuffixArray&lt;/tt&gt; data type.
+     */
+    public static void main(String[] args) {
+        String s = StdIn.readAll().replaceAll("\\s+", " ").trim();
+        SuffixArray suffix = new SuffixArray(s);
+
+        // StdOut.println("rank(" + args[0] + ") = " + suffix.rank(args[0]));
+
+        StdOut.println("  i ind lcp rnk select");
+        StdOut.println("---------------------------");
+
+        for (int i = 0; i &lt; s.length(); i++) {
+            int index = suffix.index(i);
+            String ith = "\"" + s.substring(index, Math.min(index + 50, s.length())) + "\"";
+            assert s.substring(index).equals(suffix.select(i));
+            int rank = suffix.rank(s.substring(index));
+            if (i == 0) {
+                StdOut.printf("%3d %3d %3s %3d %s\n", i, index, "-", rank, ith);
+            }
+            else {
+                int lcp = suffix.lcp(i);
+                StdOut.printf("%3d %3d %3d %3d %s\n", i, index, lcp, rank, ith);
+            }
+        }
+    }
+
+}
+</pre></body></html>

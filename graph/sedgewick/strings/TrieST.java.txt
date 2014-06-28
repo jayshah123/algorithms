@@ -1,0 +1,304 @@
+
+<!-- saved from url=(0048)http://algs4.cs.princeton.edu/52trie/TrieST.java -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><div id="StayFocusd-infobar" style="display:none;">
+    <img src="chrome-extension://laankejkbhbdhmipfmgcngdelahlfoji/common/img/eye_19x19_red.png">
+    <span id="StayFocusd-infobar-msg"></span>
+    <span id="StayFocusd-infobar-links">
+        <a id="StayFocusd-infobar-never-show">hide forever</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a id="StayFocusd-infobar-hide">hide once</a>
+    </span>
+</div><pre style="word-wrap: break-word; white-space: pre-wrap;">/*************************************************************************
+ *  Compilation:  javac TrieST.java
+ *  Execution:    java TrieST &lt; words.txt
+ *  Dependencies: StdIn.java
+ *
+ *  A string symbol table for extended ASCII strings, implemented
+ *  using a 256-way trie.
+ *
+ *  % java TrieST &lt; shellsST.txt 
+ *  by 4
+ *  sea 6
+ *  sells 1
+ *  she 0
+ *  shells 3
+ *  shore 7
+ *  the 5
+ *
+ *************************************************************************/
+
+/**
+ *  The &lt;tt&gt;TrieST&lt;/tt&gt; class represents an symbol table of key-value
+ *  pairs, with string keys and generic values.
+ *  It supports the usual &lt;em&gt;put&lt;/em&gt;, &lt;em&gt;get&lt;/em&gt;, &lt;em&gt;contains&lt;/em&gt;,
+ *  &lt;em&gt;delete&lt;/em&gt;, &lt;em&gt;size&lt;/em&gt;, and &lt;em&gt;is-empty&lt;/em&gt; methods.
+ *  It also provides character-based methods for finding the string
+ *  in the symbol table that is the &lt;em&gt;longest prefix&lt;/em&gt; of a given prefix,
+ *  finding all strings in the symbol table that &lt;em&gt;start with&lt;/em&gt; a given prefix,
+ *  and finding all strings in the symbol table that &lt;em&gt;match&lt;/em&gt; a given pattern.
+ *  A symbol table implements the &lt;em&gt;associative array&lt;/em&gt; abstraction:
+ *  when associating a value with a key that is already in the symbol table,
+ *  the convention is to replace the old value with the new value.
+ *  Unlike {@link java.util.Map}, this class uses the convention that
+ *  values cannot be &lt;tt&gt;null&lt;/tt&gt;&amp;mdash;setting the
+ *  value associated with a key to &lt;tt&gt;null&lt;/tt&gt; is equivalent to deleting the key
+ *  from the symbol table.
+ *  &lt;p&gt;
+ *  This implementation uses a 256-way trie.
+ *  The &lt;em&gt;put&lt;/em&gt;, &lt;em&gt;contains&lt;/em&gt;, &lt;em&gt;delete&lt;/em&gt;, and
+ *  &lt;em&gt;longest prefix&lt;/em&gt; operations take time proportional to the length
+ *  of the key (in the worst case). Construction takes constant time.
+ *  The &lt;em&gt;size&lt;/em&gt;, and &lt;em&gt;is-empty&lt;/em&gt; operations take constant time.
+ *  Construction takes constant time.
+ *  &lt;p&gt;
+ *  For additional documentation, see &lt;a href="http://algs4.cs.princeton.edu/52trie"&gt;Section 5.2&lt;/a&gt; of
+ *  &lt;i&gt;Algorithms, 4th Edition&lt;/i&gt; by Robert Sedgewick and Kevin Wayne.
+ */
+public class TrieST&lt;Value&gt; {
+    private static final int R = 256;        // extended ASCII
+
+
+    private Node root;      // root of trie
+    private int N;          // number of keys in trie
+
+    // R-way trie node
+    private static class Node {
+        private Object val;
+        private Node[] next = new Node[R];
+    }
+
+    public TrieST() {
+    }
+
+   /**
+     * Initializes an empty string symbol table.
+     */
+
+    /**
+     * Returns the value associated with the given key.
+     * @param key the key
+     * @return the value associated with the given key if the key is in the symbol table
+     *     and &lt;tt&gt;null&lt;/tt&gt; if the key is not in the symbol table
+     * @throws NullPointerException if &lt;tt&gt;key&lt;/tt&gt; is &lt;tt&gt;null&lt;/tt&gt;
+     */
+    public Value get(String key) {
+        Node x = get(root, key, 0);
+        if (x == null) return null;
+        return (Value) x.val;
+    }
+
+    /**
+     * Does this symbol table contain the given key?
+     * @param key the key
+     * @return &lt;tt&gt;true&lt;/tt&gt; if this symbol table contains &lt;tt&gt;key&lt;/tt&gt; and
+     *     &lt;tt&gt;false&lt;/tt&gt; otherwise
+     * @throws NullPointerException if &lt;tt&gt;key&lt;/tt&gt; is &lt;tt&gt;null&lt;/tt&gt;
+     */
+    public boolean contains(String key) {
+        return get(key) != null;
+    }
+
+    private Node get(Node x, String key, int d) {
+        if (x == null) return null;
+        if (d == key.length()) return x;
+        char c = key.charAt(d);
+        return get(x.next[c], key, d+1);
+    }
+
+    /**
+     * Inserts the key-value pair into the symbol table, overwriting the old value
+     * with the new value if the key is already in the symbol table.
+     * If the value is &lt;tt&gt;null&lt;/tt&gt;, this effectively deletes the key from the symbol table.
+     * @param key the key
+     * @param val the value
+     * @throws NullPointerException if &lt;tt&gt;key&lt;/tt&gt; is &lt;tt&gt;null&lt;/tt&gt;
+     */
+    public void put(String key, Value val) {
+        if (val == null) delete(key);
+        else root = put(root, key, val, 0);
+    }
+
+    private Node put(Node x, String key, Value val, int d) {
+        if (x == null) x = new Node();
+        if (d == key.length()) {
+            if (x.val == null) N++;
+            x.val = val;
+            return x;
+        }
+        char c = key.charAt(d);
+        x.next[c] = put(x.next[c], key, val, d+1);
+        return x;
+    }
+
+    /**
+     * Returns the number of key-value pairs in this symbol table.
+     * @return the number of key-value pairs in this symbol table
+     */
+    public int size() {
+        return N;
+    }
+
+    /**
+     * Is this symbol table empty?
+     * @return &lt;tt&gt;true&lt;/tt&gt; if this symbol table is empty and &lt;tt&gt;false&lt;/tt&gt; otherwise
+     */
+    public boolean isEmpty() {
+        return size() == 0;
+    }
+
+    /**
+     * Returns all keys in the symbol table as an &lt;tt&gt;Iterable&lt;/tt&gt;.
+     * To iterate over all of the keys in the symbol table named &lt;tt&gt;st&lt;/tt&gt;,
+     * use the foreach notation: &lt;tt&gt;for (Key key : st.keys())&lt;/tt&gt;.
+     * @return all keys in the sybol table as an &lt;tt&gt;Iterable&lt;/tt&gt;
+     */
+    public Iterable&lt;String&gt; keys() {
+        return keysWithPrefix("");
+    }
+
+    /**
+     * Returns all of the keys in the set that start with &lt;tt&gt;prefix&lt;/tt&gt;.
+     * @param prefix the prefix
+     * @return all of the keys in the set that start with &lt;tt&gt;prefix&lt;/tt&gt;,
+     *     as an iterable
+     */
+    public Iterable&lt;String&gt; keysWithPrefix(String prefix) {
+        Queue&lt;String&gt; results = new Queue&lt;String&gt;();
+        Node x = get(root, prefix, 0);
+        collect(x, new StringBuilder(prefix), results);
+        return results;
+    }
+
+    private void collect(Node x, StringBuilder prefix, Queue&lt;String&gt; results) {
+        if (x == null) return;
+        if (x.val != null) results.enqueue(prefix.toString());
+        for (char c = 0; c &lt; R; c++) {
+            prefix.append(c);
+            collect(x.next[c], prefix, results);
+            prefix.deleteCharAt(prefix.length() - 1);
+        }
+    }
+
+    /**
+     * Returns all of the keys in the symbol table that match &lt;tt&gt;pattern&lt;/tt&gt;,
+     * where . symbol is treated as a wildcard character.
+     * @param pattern the pattern
+     * @return all of the keys in the symbol table that match &lt;tt&gt;pattern&lt;/tt&gt;,
+     *     as an iterable, where . is treated as a wildcard character.
+     */
+    public Iterable&lt;String&gt; keysThatMatch(String pattern) {
+        Queue&lt;String&gt; results = new Queue&lt;String&gt;();
+        collect(root, new StringBuilder(), pattern, results);
+        return results;
+    }
+
+    private void collect(Node x, StringBuilder prefix, String pattern, Queue&lt;String&gt; results) {
+        if (x == null) return;
+        int d = prefix.length();
+        if (d == pattern.length() &amp;&amp; x.val != null)
+            results.enqueue(prefix.toString());
+        if (d == pattern.length())
+            return;
+        char c = pattern.charAt(d);
+        if (c == '.') {
+            for (char ch = 0; ch &lt; R; ch++) {
+                prefix.append(ch);
+                collect(x.next[ch], prefix, pattern, results);
+                prefix.deleteCharAt(prefix.length() - 1);
+            }
+        }
+        else {
+            prefix.append(c);
+            collect(x.next[c], prefix, pattern, results);
+            prefix.deleteCharAt(prefix.length() - 1);
+        }
+    }
+
+    /**
+     * Returns the string in the symbol table that is the longest prefix of &lt;tt&gt;query&lt;/tt&gt;,
+     * or &lt;tt&gt;null&lt;/tt&gt;, if no such string.
+     * @param query the query string
+     * @throws NullPointerException if &lt;tt&gt;query&lt;/tt&gt; is &lt;tt&gt;null&lt;/tt&gt;
+     * @return the string in the symbol table that is the longest prefix of &lt;tt&gt;query&lt;/tt&gt;,
+     *     or &lt;tt&gt;null&lt;/tt&gt; if no such string
+     */
+    public String longestPrefixOf(String query) {
+        int length = longestPrefixOf(root, query, 0, 0);
+        return query.substring(0, length);
+    }
+
+    // returns the length of the longest string key in the subtrie
+    // rooted at x that is a prefix of the query string,
+    // assuming the first d character match and we have already
+    // found a prefix match of length length
+    private int longestPrefixOf(Node x, String query, int d, int length) {
+        if (x == null) return length;
+        if (x.val != null) length = d;
+        if (d == query.length()) return length;
+        char c = query.charAt(d);
+        return longestPrefixOf(x.next[c], query, d+1, length);
+    }
+
+    /**
+     * Removes the key from the set if the key is present.
+     * @param key the key
+     * @throws NullPointerException if &lt;tt&gt;key&lt;/tt&gt; is &lt;tt&gt;null&lt;/tt&gt;
+     */
+    public void delete(String key) {
+        root = delete(root, key, 0);
+    }
+
+    private Node delete(Node x, String key, int d) {
+        if (x == null) return null;
+        if (d == key.length()) {
+            if (x.val != null) N--;
+            x.val = null;
+        }
+        else {
+            char c = key.charAt(d);
+            x.next[c] = delete(x.next[c], key, d+1);
+        }
+
+        // remove subtrie rooted at x if it is completely empty
+        if (x.val != null) return x;
+        for (int c = 0; c &lt; R; c++)
+            if (x.next[c] != null)
+                return x;
+        return null;
+    }
+
+    /**
+     * Unit tests the &lt;tt&gt;TrieSET&lt;/tt&gt; data type.
+     */
+    public static void main(String[] args) {
+
+        // build symbol table from standard input
+        TrieST&lt;Integer&gt; st = new TrieST&lt;Integer&gt;();
+        for (int i = 0; !StdIn.isEmpty(); i++) {
+            String key = StdIn.readString();
+            st.put(key, i);
+        }
+
+        // print results
+        if (st.size() &lt; 100) {
+            StdOut.println("keys(\"\"):");
+            for (String key : st.keys()) {
+                StdOut.println(key + " " + st.get(key));
+            }
+            StdOut.println();
+        }
+
+        StdOut.println("longestPrefixOf(\"shellsort\"):");
+        StdOut.println(st.longestPrefixOf("shellsort"));
+        StdOut.println();
+
+        StdOut.println("keysWithPrefix(\"shor\"):");
+        for (String s : st.keysWithPrefix("shor"))
+            StdOut.println(s);
+        StdOut.println();
+
+        StdOut.println("keysThatMatch(\".he.l.\"):");
+        for (String s : st.keysThatMatch(".he.l."))
+            StdOut.println(s);
+    }
+}
+</pre></body></html>
