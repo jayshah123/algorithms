@@ -1,0 +1,7 @@
+System Calls
+
+To perform a system call using the GNU EABI:
+
+put the system call number in r7
+put the arguments in r0-r6 (64bit arguments must be aligned to an even numbered register i.e. in r0+r1, r2+r3, or r4+r5)
+issue the Supervisor Call instruction with a zero operand — svc #0

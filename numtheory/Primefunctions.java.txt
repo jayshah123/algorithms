@@ -1,0 +1,29 @@
+public int[] getPrimeNumbers(int max){
+        boolean[] table = getPrimeTable(max);
+        int size = 0;
+        for(int i = 1; i <= max; i++){
+            if(table[i]) size++;
+        }
+        int[] rets = new int[size];
+        int current = 0;
+        for(int i = 1; i <= max; i++){
+            if(table[i]){
+                rets[current++] = i;
+            }
+        }
+        return rets;
+    }
+    public boolean[] getPrimeTable(int max){
+        boolean[] isPrime = new boolean[max+1];
+        for(int i = 2; i <= max; i++){
+            isPrime[i] = true;
+        }
+        for(int i = 2; i <= max; i++){
+            if(isPrime[i]){
+                for(int j = i+i; j <= max; j+=i){
+                    isPrime[j] = false;
+                }
+            }
+        }
+        return isPrime;
+    }
