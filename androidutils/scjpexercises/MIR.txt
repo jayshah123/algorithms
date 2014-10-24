@@ -1,0 +1,13 @@
+Receive m
+F0 = 0
+F1 = 1
+If m<=1 goto L3
+i = 2
+L1 : If i<=m goto L2
+Return F2
+L2 : F2 = F0 + F1
+F0 = F1
+F1 = F2
+i = i+1
+goto L1
+L3 : Return m
